@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Zwangsversteigerung — 37 Objekte</title>
+<title>Zwangsversteigerung — 25 Objekte</title>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:#f5f5f2;color:#1a1a18;padding:1.5rem}
@@ -27,7 +27,10 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 .card-sub{font-size:13px;color:#888780;margin-bottom:10px}
 .card-photos{display:flex;gap:4px;flex-wrap:wrap;margin-bottom:10px}
 .card-photos img{width:56px;height:42px;object-fit:cover;border-radius:6px;cursor:pointer;border:1px solid #e0dfd8;transition:transform .15s}
-.card-photos img:hover{transform:scale(2.2);z-index:10;border-color:#b4b2a9}
+.card-photos img:hover{transform:scale(1.15);border-color:#b4b2a9}
+.lightbox{display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.88);z-index:9999;justify-content:center;align-items:center;cursor:pointer}
+.lightbox.show{display:flex}
+.lightbox img{max-width:92vw;max-height:92vh;object-fit:contain;border-radius:6px;box-shadow:0 4px 30px rgba(0,0,0,.5)}
 .card-price{font-size:22px;font-weight:500;margin-bottom:8px}
 .card-row{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px}
 .pill{font-size:11px;padding:2px 8px;border-radius:20px;border:1px solid #e0dfd8;color:#5f5e5a}
@@ -58,11 +61,11 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 </head>
 <body>
 <div class="header">
-<h1>Zwangsversteigerung &mdash; 37 Objekte</h1>
-<p>Analyse per DeepSeek &middot; 37 Objekte</p>
+<h1>Zwangsversteigerung &mdash; 25 Objekte</h1>
+<p>Analyse per DeepSeek &middot; 25 Objekte</p>
 </div>
 <div class="stats-row">
-<div class="stat"><div class="stat-label">Objekte gesamt</div><div class="stat-val" id="s-total">37</div></div>
+<div class="stat"><div class="stat-label">Objekte gesamt</div><div class="stat-val" id="s-total">25</div></div>
 <div class="stat"><div class="stat-label">Min. Verkehrswert</div><div class="stat-val" id="s-min">&mdash;</div></div>
 <div class="stat"><div class="stat-label">Max. Verkehrswert</div><div class="stat-val" id="s-max">&mdash;</div></div>
 <div class="stat"><div class="stat-label">Naechster Termin</div><div class="stat-val" id="s-next">&mdash;</div></div>
@@ -78,6 +81,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 </div>
 <div class="grid" id="grid"></div>
 <div class="no-results" id="no-results" style="display:none">Keine Ergebnisse</div>
+<div class="lightbox" id="lightbox" onclick="closeLightbox()"><img id="lightbox-img" src="" alt=""></div>
 <script>
 const DATA=[
   {
@@ -314,67 +318,6 @@ const DATA=[
     ]
   },
   {
-    "id": "374938",
-    "addr": "Dirschauer Weg 10, 40599 Düsseldorf",
-    "bezirk": "Hassels",
-    "type": "Haus",
-    "wfl": 134,
-    "rooms": 5,
-    "bj": 1937,
-    "vw": 704000,
-    "date": "2026-06-18",
-    "beschluss": true,
-    "gutachten": true,
-    "pros": [
-      "Umfassend modernisiert (2020)",
-      "Gute Wohnlage in Düsseldorf",
-      "Separates unbebautes Grundstück (47 m²) inklusive"
-    ],
-    "cons": [
-      "Innenbesichtigung nicht möglich",
-      "Restarbeiten an Terrasse und Außentreppe",
-      "Kein Energieausweis vorgelegt"
-    ],
-    "risks": "Unbekannter Innenzustand, mögliche versteckte Mängel, fehlende Absturzsicherungen.",
-    "risk": "med",
-    "markt": "750-850 kEUR",
-    "discount": "~10-15% unter Markt",
-    "liqui": "mittel",
-    "miete": "2000-2500 EUR/Mo",
-    "yld": "~3.5%",
-    "costs": "10-30 kEUR",
-    "verdict": "Attraktives Objekt mit gutem Modernisierungsgrad und Potenzial. Maximalgebot 630-650 kEUR.",
-    "bid": "630-650 kEUR",
-    "zvg_link": "https://www.zvg-portal.de/index.php?button=showZvg&zvg_id=167325&land_abk=nw",
-    "photos": [
-      "pic/thmb/374938_img1.jpeg",
-      "pic/thmb/374938_img10.png",
-      "pic/thmb/374938_img11.png",
-      "pic/thmb/374938_img12.png",
-      "pic/thmb/374938_img13.jpeg",
-      "pic/thmb/374938_img14.jpeg",
-      "pic/thmb/374938_img15.png",
-      "pic/thmb/374938_img16.jpeg",
-      "pic/thmb/374938_img17.png",
-      "pic/thmb/374938_img18.png",
-      "pic/thmb/374938_img19.jpeg",
-      "pic/thmb/374938_img2.jpeg",
-      "pic/thmb/374938_img20.png",
-      "pic/thmb/374938_img21.png",
-      "pic/thmb/374938_img22.jpeg",
-      "pic/thmb/374938_img23.png",
-      "pic/thmb/374938_img24.jpeg",
-      "pic/thmb/374938_img25.png",
-      "pic/thmb/374938_img3.jpeg",
-      "pic/thmb/374938_img4.jpeg",
-      "pic/thmb/374938_img5.jpeg",
-      "pic/thmb/374938_img6.jpeg",
-      "pic/thmb/374938_img7.jpeg",
-      "pic/thmb/374938_img8.jpeg",
-      "pic/thmb/374938_img9.jpeg"
-    ]
-  },
-  {
     "id": "374949",
     "addr": "Im Hasengarten 36, 50996 Köln (Hahnwald)",
     "bezirk": "Hahnwald",
@@ -584,225 +527,6 @@ const DATA=[
     ]
   },
   {
-    "id": "375599",
-    "addr": "Sybelstraße 26, 26a, 40227 Düsseldorf",
-    "bezirk": "Düsseltal",
-    "type": "Wohnung",
-    "wfl": 170,
-    "rooms": null,
-    "bj": 1984,
-    "vw": 930000,
-    "date": "2026-06-23",
-    "beschluss": true,
-    "gutachten": true,
-    "pros": [
-      "Sehr gute, citynahe Wohnlage in Düsseltal",
-      "Großzügige Maisonettewohnung mit 170 m²",
-      "Höherwertige Ausstattungsqualität und gepflegter Zustand",
-      "Inklusive Tiefgaragenstellplatz und Nutzung Schwimmbad"
-    ],
-    "cons": [
-      "Souterrainlage kann zu geringerer Helligkeit führen",
-      "Versteigerungstermin erst in über 2 Jahren",
-      "Gutachten nicht vollständig lesbar (Lesefehler)"
-    ],
-    "risks": "Hauptrisiken: Lange Wartezeit bis zum Termin, mögliche Mängel im Souterrain, unklare Rechtsverhältnisse durch Gemeinschaftsaufhebung.",
-    "risk": "med",
-    "markt": "1.100.000 - 1.300.000 EUR",
-    "discount": "ca. 15-20% unter Markt",
-    "liqui": "mittel",
-    "miete": "2.500 - 3.000 EUR/Mo",
-    "yld": "ca. 3.2-3.9%",
-    "costs": "10.000 - 30.000 EUR",
-    "verdict": "Attraktive Wohnung in Top-Lage mit gutem Preisabschlag. Maximales Gebot sollte bei 850.000 EUR liegen, um ausreichend Rendite zu erzielen.",
-    "bid": "800.000 - 850.000 EUR",
-    "zvg_link": "https://www.zvg-portal.de/index.php?button=showZvg&zvg_id=167525&land_abk=nw",
-    "photos": [
-      "pic/thmb/375599_img1.png",
-      "pic/thmb/375599_img10.jpeg",
-      "pic/thmb/375599_img11.jpeg",
-      "pic/thmb/375599_img12.jpeg",
-      "pic/thmb/375599_img2.png",
-      "pic/thmb/375599_img3.png",
-      "pic/thmb/375599_img4.jpeg",
-      "pic/thmb/375599_img5.jpeg",
-      "pic/thmb/375599_img6.jpeg",
-      "pic/thmb/375599_img7.jpeg",
-      "pic/thmb/375599_img8.jpeg",
-      "pic/thmb/375599_img9.jpeg"
-    ]
-  },
-  {
-    "id": "375635",
-    "addr": "Birkenstraße 20, 40233 Düsseldorf-Flingern-Nord",
-    "bezirk": "Flingern-Nord",
-    "type": "Wohnung",
-    "wfl": 35,
-    "rooms": 1,
-    "bj": 1957,
-    "vw": 83000,
-    "date": "2026-06-23",
-    "beschluss": true,
-    "gutachten": true,
-    "pros": [
-      "Citynahe Lage in Düsseldorf-Flingern",
-      "Geringer Verkehrswert von 83.000 EUR",
-      "Keine Wohnungsbindung"
-    ],
-    "cons": [
-      "Keine Innenbesichtigung möglich",
-      "Nur 35 m² Wohnfläche",
-      "Kein Aufzug im Haus"
-    ],
-    "risks": "Unbekannter Innenzustand, da keine Besichtigung; möglicher Sanierungsstau.",
-    "risk": "high",
-    "markt": "100-120 kEUR",
-    "discount": "~20-30% unter Markt",
-    "liqui": "mittel",
-    "miete": "500-700 EUR/Mo",
-    "yld": "~7-10%",
-    "costs": "20-50 kEUR",
-    "verdict": "Kauf nur für erfahrene Investoren mit Risikobereitschaft. Maximalgebot 70.000 EUR.",
-    "bid": "60-70 kEUR",
-    "zvg_link": "https://www.zvg-portal.de/index.php?button=showZvg&zvg_id=167537&land_abk=nw",
-    "photos": [
-      "pic/thmb/375635_img1.jpeg",
-      "pic/thmb/375635_img10.jpeg",
-      "pic/thmb/375635_img11.jpeg",
-      "pic/thmb/375635_img12.jpeg",
-      "pic/thmb/375635_img2.jpeg",
-      "pic/thmb/375635_img3.jpeg",
-      "pic/thmb/375635_img4.jpeg",
-      "pic/thmb/375635_img5.png",
-      "pic/thmb/375635_img6.png",
-      "pic/thmb/375635_img7.png",
-      "pic/thmb/375635_img8.jpeg",
-      "pic/thmb/375635_img9.jpeg"
-    ]
-  },
-  {
-    "id": "375660",
-    "addr": "Röpkestraße 82, 40235 Düsseldorf",
-    "bezirk": "Flingern-Nord",
-    "type": "Haus",
-    "wfl": 179,
-    "rooms": 6,
-    "bj": 2019,
-    "vw": 1176200,
-    "date": "2026-06-19",
-    "beschluss": true,
-    "gutachten": true,
-    "pros": [
-      "Neubau (Baujahr ca. 2019) mit moderner Ausstattung",
-      "Gute Lage in Düsseldorf-Flingern-Nord mit guter Infrastruktur",
-      "Großzügige Wohnfläche von 179 m² mit 6 Zimmern und Dachterrasse"
-    ],
-    "cons": [
-      "Komplexe Grundstücksstruktur mit mehreren Flurstücken und Miteigentumsanteilen",
-      "Baulast und Dienstbarkeiten auf den Erschließungsflächen",
-      "Mögliche Altlasten (Altstandort Nr. 5885) ohne Bodenuntersuchung"
-    ],
-    "risks": "Hauptrisiken: unklare Altlastensituation, komplexe Eigentumsverhältnisse mit mehreren Dienstbarkeiten und Baulasten, sowie mögliche Beitragspflichten nach KAG NRW.",
-    "risk": "med",
-    "markt": "1.300-1.500 kEUR",
-    "discount": "~15-20% unter Markt",
-    "liqui": "mittel",
-    "miete": "3500-4500 EUR/Mo",
-    "yld": "~3.5-4.0%",
-    "costs": "0-10 kEUR",
-    "verdict": "Das Objekt ist aufgrund der Neubauqualität und Lage attraktiv, jedoch sind die komplexen Grundstücksverhältnisse und Altlastenrisiken zu beachten. Maximales Gebot sollte bei ca. 1.000.000 EUR liegen.",
-    "bid": "950-1.000 kEUR",
-    "zvg_link": "https://www.zvg-portal.de/index.php?button=showZvg&zvg_id=167546&land_abk=nw",
-    "photos": [
-      "pic/thmb/375660_img1.jpeg",
-      "pic/thmb/375660_img10.png",
-      "pic/thmb/375660_img11.jpeg",
-      "pic/thmb/375660_img12.png",
-      "pic/thmb/375660_img13.png",
-      "pic/thmb/375660_img14.png",
-      "pic/thmb/375660_img15.jpeg",
-      "pic/thmb/375660_img16.png",
-      "pic/thmb/375660_img17.jpeg",
-      "pic/thmb/375660_img18.png",
-      "pic/thmb/375660_img19.png",
-      "pic/thmb/375660_img2.jpeg",
-      "pic/thmb/375660_img20.png",
-      "pic/thmb/375660_img21.jpeg",
-      "pic/thmb/375660_img22.png",
-      "pic/thmb/375660_img23.jpeg",
-      "pic/thmb/375660_img24.png",
-      "pic/thmb/375660_img25.jpeg",
-      "pic/thmb/375660_img3.jpeg",
-      "pic/thmb/375660_img4.jpeg",
-      "pic/thmb/375660_img5.jpeg",
-      "pic/thmb/375660_img6.jpeg",
-      "pic/thmb/375660_img7.png",
-      "pic/thmb/375660_img8.png",
-      "pic/thmb/375660_img9.jpeg"
-    ]
-  },
-  {
-    "id": "375664",
-    "addr": "Röpkestraße 80, 40235 Düsseldorf",
-    "bezirk": "Flingern-Nord",
-    "type": "Haus",
-    "wfl": 181,
-    "rooms": 6,
-    "bj": 2019,
-    "vw": 1231200,
-    "date": "2026-06-26",
-    "beschluss": true,
-    "gutachten": true,
-    "pros": [
-      "Neubau (2019) mit moderner Ausstattung",
-      "Gute Lage in Flingern-Nord mit guter Infrastruktur",
-      "Reihenendhaus mit Stadthauscharakter und Dachterrasse"
-    ],
-    "cons": [
-      "Miteigentumsanteile an Erschließungsflächen und Wirtschaftsweg",
-      "Baulast auf Flurstück 499 (Geh-, Fahr- und Leitungsrecht)",
-      "Altstandort Nr. 5885 (Altlastenverdacht, aber optisch unauffällig)"
-    ],
-    "risks": "Altlastenverdacht, Baulasten und Dienstbarkeiten, sowie Miteigentumsanteile an gemeinschaftlichen Flächen können zu Einschränkungen führen.",
-    "risk": "med",
-    "markt": "1.300.000 - 1.400.000 EUR",
-    "discount": "~10-15% unter Markt",
-    "liqui": "mittel",
-    "miete": "4.500 - 5.000 EUR/Monat (geschätzt)",
-    "yld": "~4.0-4.5%",
-    "costs": "0-10 kEUR (keine Sanierung nötig)",
-    "verdict": "Attraktives Neubau-Reihenendhaus in guter Lage. Maximales Gebot sollte bei ca. 1.100.000 EUR liegen, um ausreichend Sicherheitsmarge zu haben.",
-    "bid": "1.050.000 - 1.100.000 EUR",
-    "zvg_link": "https://www.zvg-portal.de/index.php?button=showZvg&zvg_id=167548&land_abk=nw",
-    "photos": [
-      "pic/thmb/375664_img1.jpeg",
-      "pic/thmb/375664_img10.png",
-      "pic/thmb/375664_img11.jpeg",
-      "pic/thmb/375664_img12.png",
-      "pic/thmb/375664_img13.png",
-      "pic/thmb/375664_img14.png",
-      "pic/thmb/375664_img15.jpeg",
-      "pic/thmb/375664_img16.png",
-      "pic/thmb/375664_img17.jpeg",
-      "pic/thmb/375664_img18.png",
-      "pic/thmb/375664_img19.jpeg",
-      "pic/thmb/375664_img2.jpeg",
-      "pic/thmb/375664_img20.png",
-      "pic/thmb/375664_img21.jpeg",
-      "pic/thmb/375664_img22.png",
-      "pic/thmb/375664_img23.png",
-      "pic/thmb/375664_img24.jpeg",
-      "pic/thmb/375664_img25.png",
-      "pic/thmb/375664_img3.jpeg",
-      "pic/thmb/375664_img4.jpeg",
-      "pic/thmb/375664_img5.jpeg",
-      "pic/thmb/375664_img6.jpeg",
-      "pic/thmb/375664_img7.png",
-      "pic/thmb/375664_img8.png",
-      "pic/thmb/375664_img9.jpeg"
-    ]
-  },
-  {
     "id": "375787",
     "addr": "Dreifelder Weg 20, 50767 Köln (Lindweiler)",
     "bezirk": "Lindweiler",
@@ -903,67 +627,6 @@ const DATA=[
     ]
   },
   {
-    "id": "376109",
-    "addr": "Im Heidewinkel 29, 40625 Düsseldorf-Gerresheim",
-    "bezirk": "Gerresheim",
-    "type": "Wohnung",
-    "wfl": 106,
-    "rooms": 3,
-    "bj": 1957,
-    "vw": 525000,
-    "date": "2026-08-06",
-    "beschluss": true,
-    "gutachten": true,
-    "pros": [
-      "Gute Lage in Düsseldorf-Gerresheim mit guter Infrastruktur",
-      "Großzügige Wohnfläche von 106 m² plus 70 m² Nebenfläche im Keller",
-      "Inklusive Garage und Sondernutzungsrecht an Gartenteil"
-    ],
-    "cons": [
-      "Baujahr 1957, hohes Alter mit entsprechendem Modernisierungsstau",
-      "Ein Kellerraum ohne Baugenehmigung ausgebaut",
-      "Nördlich verläuft stark befahrene B7 mit Lärmimmissionen"
-    ],
-    "risks": "Hauptrisiken: ungeklärte Legalität eines Kellerraums, mögliche Instandhaltungsrückstände, Lärmbelastung durch B7.",
-    "risk": "med",
-    "markt": "450-550 kEUR",
-    "discount": "~5-10% unter Markt",
-    "liqui": "mittel",
-    "miete": "1200-1500 EUR/Mo",
-    "yld": "~3.5-4.5%",
-    "costs": "30-60 kEUR",
-    "verdict": "Kaufempfehlung für Investoren, die Modernisierung und ggf. rechtliche Klärung des Kellerausbaus in Kauf nehmen. Maximales Gebot: 300-320 kEUR.",
-    "bid": "300-320 kEUR",
-    "zvg_link": "https://www.zvg-portal.de/index.php?button=showZvg&zvg_id=167676&land_abk=nw",
-    "photos": [
-      "pic/thmb/376109_img1.jpeg",
-      "pic/thmb/376109_img10.png",
-      "pic/thmb/376109_img11.png",
-      "pic/thmb/376109_img12.jpeg",
-      "pic/thmb/376109_img13.jpeg",
-      "pic/thmb/376109_img14.png",
-      "pic/thmb/376109_img15.jpeg",
-      "pic/thmb/376109_img16.png",
-      "pic/thmb/376109_img17.jpeg",
-      "pic/thmb/376109_img18.png",
-      "pic/thmb/376109_img19.png",
-      "pic/thmb/376109_img2.jpeg",
-      "pic/thmb/376109_img20.png",
-      "pic/thmb/376109_img21.jpeg",
-      "pic/thmb/376109_img22.png",
-      "pic/thmb/376109_img23.jpeg",
-      "pic/thmb/376109_img24.png",
-      "pic/thmb/376109_img25.png",
-      "pic/thmb/376109_img3.jpeg",
-      "pic/thmb/376109_img4.jpeg",
-      "pic/thmb/376109_img5.jpeg",
-      "pic/thmb/376109_img6.jpeg",
-      "pic/thmb/376109_img7.jpeg",
-      "pic/thmb/376109_img8.jpeg",
-      "pic/thmb/376109_img9.jpeg"
-    ]
-  },
-  {
     "id": "376147",
     "addr": "Diepeschrather Straße 29, 51069 Köln",
     "bezirk": "Dellbrück",
@@ -1053,51 +716,6 @@ const DATA=[
     ]
   },
   {
-    "id": "376305",
-    "addr": "Am Mergelsberg 29, 40629 Düsseldorf-Knittkuhl",
-    "bezirk": "Knittkuhl",
-    "type": "Wohnung",
-    "wfl": 82,
-    "rooms": 4,
-    "bj": 1972,
-    "vw": 230000,
-    "date": "2026-06-30",
-    "beschluss": true,
-    "gutachten": true,
-    "pros": [
-      "Großzügiger und gut geschnittener Grundriss",
-      "Zentrale Lage in Düsseldorf-Knittkuhl mit guter Anbindung",
-      "Verkehrswert von 230.000 EUR liegt unter vergleichbaren Marktpreisen"
-    ],
-    "cons": [
-      "Keine Innenbesichtigung möglich, Zustand ungewiss",
-      "Baujahr 1972, möglicherweise Modernisierungsstau",
-      "Kein Sondernutzungsrecht an Außenflächen"
-    ],
-    "risks": "Hauptrisiko: unbekannter Innenzustand wegen verweigerter Besichtigung, mögliche Altlasten oder Mängel.",
-    "risk": "med",
-    "markt": "280-320 kEUR",
-    "discount": "~15-20% unter Markt",
-    "liqui": "mittel",
-    "miete": "1000-1200 EUR/Mo",
-    "yld": "~5.2%",
-    "costs": "20-50 kEUR",
-    "verdict": "Kaufempfehlung für risikobewusste Bieter. Maximalgebot 250.000 EUR, da Innenzustand unklar und Sanierungskosten einkalkuliert werden müssen.",
-    "bid": "240-250 kEUR",
-    "zvg_link": "https://www.zvg-portal.de/index.php?button=showZvg&zvg_id=167738&land_abk=nw",
-    "photos": [
-      "pic/thmb/376305_img1.jpx",
-      "pic/thmb/376305_img2.jpx",
-      "pic/thmb/376305_img3.png",
-      "pic/thmb/376305_img4.jpx",
-      "pic/thmb/376305_img5.jpx",
-      "pic/thmb/376305_img6.jpx",
-      "pic/thmb/376305_img7.jpx",
-      "pic/thmb/376305_img8.jpx",
-      "pic/thmb/376305_img9.jpx"
-    ]
-  },
-  {
     "id": "376324",
     "addr": "Aloeweg 91, 51109 Köln",
     "bezirk": "Merheim",
@@ -1137,67 +755,6 @@ const DATA=[
       "pic/thmb/376324_img4.jpeg",
       "pic/thmb/376324_img5.jpx",
       "pic/thmb/376324_img6.jpeg"
-    ]
-  },
-  {
-    "id": "376392",
-    "addr": "Gilbachstraße 3, 40219 Düsseldorf",
-    "bezirk": "Unterbilk",
-    "type": "Gewerbe",
-    "wfl": null,
-    "rooms": null,
-    "bj": 1960,
-    "vw": 1230000,
-    "date": "2026-07-14",
-    "beschluss": true,
-    "gutachten": true,
-    "pros": [
-      "Gute Lage in Düsseldorf-Unterbilk, einem gefragten Stadtteil mit guter Infrastruktur und Nahverkehrsanbindung",
-      "Zwei Teileigentumseinheiten mit insgesamt ca. 434 m² Nutzfläche, geeignet für Büro- oder Gewerbenutzung",
-      "Sondernutzungsrechte an zwei Kfz-Stellplätzen in der Tiefgarage"
-    ],
-    "cons": [
-      "Innenwände teilweise abgebrochen und Wanddurchbruch zwischen den Einheiten, Rückbaukosten erforderlich",
-      "Baujahr 1960 mit nur teilweisen Modernisierungen, Restnutzungsdauer von 30 Jahren",
-      "Überbau der Tiefgarage auf Nachbargrundstück, mögliche rechtliche Unsicherheiten"
-    ],
-    "risks": "Hauptrisiken: Rückbaukosten für Umbauten, unklare Rechtslage zum Überbau, und möglicherweise hohe Instandhaltungsrückstände bei älterer Bausubstanz.",
-    "risk": "med",
-    "markt": "1.100-1.300 kEUR",
-    "discount": "~5-10% unter Markt",
-    "liqui": "mittel",
-    "miete": "8-12 EUR/m² kalt, geschätzt 3.500-5.200 EUR/Mo",
-    "yld": "~4-5%",
-    "costs": "30-60 kEUR",
-    "verdict": "Kaufempfehlung für Investoren, die eine Gewerbeimmobilie in guter Lage suchen. Maximales Gebot sollte bei ca. 1.100.000 EUR liegen, um ausreichend Rendite zu erzielen.",
-    "bid": "1.000.000-1.100.000 EUR",
-    "zvg_link": "https://www.zvg-portal.de/index.php?button=showZvg&zvg_id=167767&land_abk=nw",
-    "photos": [
-      "pic/thmb/376392_img1.jpeg",
-      "pic/thmb/376392_img10.jpeg",
-      "pic/thmb/376392_img11.jpeg",
-      "pic/thmb/376392_img12.jpeg",
-      "pic/thmb/376392_img13.jpeg",
-      "pic/thmb/376392_img14.jpeg",
-      "pic/thmb/376392_img15.jpeg",
-      "pic/thmb/376392_img16.jpeg",
-      "pic/thmb/376392_img17.jpeg",
-      "pic/thmb/376392_img18.jpeg",
-      "pic/thmb/376392_img19.png",
-      "pic/thmb/376392_img2.jpeg",
-      "pic/thmb/376392_img20.jpeg",
-      "pic/thmb/376392_img21.png",
-      "pic/thmb/376392_img22.png",
-      "pic/thmb/376392_img23.jpeg",
-      "pic/thmb/376392_img24.png",
-      "pic/thmb/376392_img25.jpeg",
-      "pic/thmb/376392_img3.jpeg",
-      "pic/thmb/376392_img4.jpeg",
-      "pic/thmb/376392_img5.jpeg",
-      "pic/thmb/376392_img6.jpeg",
-      "pic/thmb/376392_img7.jpeg",
-      "pic/thmb/376392_img8.jpeg",
-      "pic/thmb/376392_img9.jpeg"
     ]
   },
   {
@@ -1262,48 +819,6 @@ const DATA=[
     ]
   },
   {
-    "id": "376543",
-    "addr": "Am blinden Weg / Am Wassenberg, 40489 Düsseldorf-Angermund",
-    "bezirk": "Angermund",
-    "type": "Sonstiges",
-    "wfl": null,
-    "rooms": null,
-    "bj": null,
-    "vw": 106000,
-    "date": "2026-07-07",
-    "beschluss": true,
-    "gutachten": true,
-    "pros": [
-      "Günstiger Verkehrswert von nur 106.000 EUR für drei Grundstücke",
-      "Lage in gefragtem Stadtteil Angermund mit gehobener Wohnlage",
-      "Pachterträge vorhanden (ca. 990 EUR/Jahr)"
-    ],
-    "cons": [
-      "Keine Bebauung möglich (Fläche für Landwirtschaft, Wasserschutzzone IIIa)",
-      "Flurstück 155 ohne direkte Wegeanbindung, nur über Fremdgrundstücke zugänglich",
-      "Keine Vergleichspreise, geringe Marktliquidität"
-    ],
-    "risks": "Hauptrisiken: fehlende Baulandperspektive, eingeschränkte Zugänglichkeit eines Flurstücks, geringe Nachfrage nach landwirtschaftlichen Flächen.",
-    "risk": "high",
-    "markt": "100-110 kEUR",
-    "discount": "~0-5% unter Markt",
-    "liqui": "sehr niedrig",
-    "miete": "82-83 EUR/Mo (Pacht)",
-    "yld": "~0.9%",
-    "costs": "0 EUR",
-    "verdict": "Nur für landwirtschaftliche Nutzer oder Spekulanten mit langer Haltedauer geeignet. Maximalgebot nicht über Verkehrswert von 106.000 EUR.",
-    "bid": "90-106 kEUR",
-    "zvg_link": "https://www.zvg-portal.de/index.php?button=showZvg&zvg_id=167814&land_abk=nw",
-    "photos": [
-      "pic/thmb/376543_img1.jpeg",
-      "pic/thmb/376543_img2.jpeg",
-      "pic/thmb/376543_img3.jpeg",
-      "pic/thmb/376543_img4.jpeg",
-      "pic/thmb/376543_img5.jpeg",
-      "pic/thmb/376543_img6.jpeg"
-    ]
-  },
-  {
     "id": "376623",
     "addr": "Kleeweg 4, 51147 Köln (Wahn)",
     "bezirk": "Wahn",
@@ -1347,67 +862,6 @@ const DATA=[
       "pic/thmb/376623_img7.jpeg",
       "pic/thmb/376623_img8.jpeg",
       "pic/thmb/376623_img9.jpeg"
-    ]
-  },
-  {
-    "id": "376631",
-    "addr": "Oberbilker Allee 267, 40227 Düsseldorf",
-    "bezirk": "Oberbilk",
-    "type": "Wohnung",
-    "wfl": 22,
-    "rooms": 1,
-    "bj": 1994,
-    "vw": 52000,
-    "date": "2026-06-25",
-    "beschluss": true,
-    "gutachten": true,
-    "pros": [
-      "Sehr niedriger Verkehrswert (52.000 EUR) bei 22 m² in Düsseldorf",
-      "Gute Anbindung an öffentliche Verkehrsmittel (S-Bahn, U-Bahn, Bus)",
-      "Sondernutzungsrecht an Abstellraum im Spitzboden"
-    ],
-    "cons": [
-      "Starke Lärmimmissionen durch Straßenbahn und Eisenbahn",
-      "Studentenbindung schränkt Mieterkreis ein",
-      "Keine Modernisierung seit Baujahr 1994, Energieeffizienzklasse F"
-    ],
-    "risks": "Hauptrisiken: Lärmbelästigung, Studentenbindung, keine Modernisierung, mögliche Instandhaltungsrückstau in der WEG.",
-    "risk": "high",
-    "markt": "100-120 kEUR",
-    "discount": "~50% unter Markt",
-    "liqui": "niedrig",
-    "miete": "350-450 EUR/Mo",
-    "yld": "~8-10%",
-    "costs": "10-20 kEUR",
-    "verdict": "Kauf nur für renditeorientierte Investoren mit Risikobereitschaft. Maximalgebot 60.000 EUR, da hohe Instandhaltungsrisiken und eingeschränkte Vermietbarkeit.",
-    "bid": "55-60 kEUR",
-    "zvg_link": "https://www.zvg-portal.de/index.php?button=showZvg&zvg_id=167841&land_abk=nw",
-    "photos": [
-      "pic/thmb/376631_img1.jpeg",
-      "pic/thmb/376631_img10.png",
-      "pic/thmb/376631_img11.png",
-      "pic/thmb/376631_img12.png",
-      "pic/thmb/376631_img13.jpeg",
-      "pic/thmb/376631_img14.png",
-      "pic/thmb/376631_img15.jpeg",
-      "pic/thmb/376631_img16.jpeg",
-      "pic/thmb/376631_img17.png",
-      "pic/thmb/376631_img18.jpeg",
-      "pic/thmb/376631_img19.png",
-      "pic/thmb/376631_img2.jpeg",
-      "pic/thmb/376631_img20.jpeg",
-      "pic/thmb/376631_img21.png",
-      "pic/thmb/376631_img22.jpeg",
-      "pic/thmb/376631_img23.png",
-      "pic/thmb/376631_img24.png",
-      "pic/thmb/376631_img25.jpeg",
-      "pic/thmb/376631_img3.jpeg",
-      "pic/thmb/376631_img4.jpeg",
-      "pic/thmb/376631_img5.jpeg",
-      "pic/thmb/376631_img6.jpeg",
-      "pic/thmb/376631_img7.jpeg",
-      "pic/thmb/376631_img8.jpeg",
-      "pic/thmb/376631_img9.jpeg"
     ]
   },
   {
@@ -1733,41 +1187,6 @@ const DATA=[
     ]
   },
   {
-    "id": "377000",
-    "addr": "Mercedesstraße 11-13, Düsseldorf",
-    "bezirk": "Düsseltal",
-    "type": "Gewerbe",
-    "wfl": null,
-    "rooms": null,
-    "bj": 1998,
-    "vw": 8760000,
-    "date": "2026-08-14",
-    "beschluss": true,
-    "gutachten": true,
-    "pros": [
-      "Zwei separate Gewerbeliegenschaften mit unterschiedlichen Nutzungsprofilen",
-      "Gute Verkehrsanbindung (Kfz und Nahverkehr)",
-      "Positive langfristige Entwicklungstendenz des Stadtteils Düsseltal"
-    ],
-    "cons": [
-      "Haus Nr. 11 derzeit nicht rentierlich und im Liquidationsverfahren bewertet",
-      "Technisch defekte Ausführungs- und Ausstattungsqualität",
-      "Hoher Verkehrswert von 8,76 Mio. € erfordert erhebliches Kapital"
-    ],
-    "risks": "Hohes Risiko aufgrund des nicht rentierlichen Zustands von Haus Nr. 11, technischer Mängel und des hohen Kaufpreises; Marktrisiko bei Gewerbeimmobilien.",
-    "risk": "high",
-    "markt": "8.5-9.5 Mio. EUR",
-    "discount": "ca. 5-10% unter Markt",
-    "liqui": "niedrig",
-    "miete": "unbekannt",
-    "yld": "unbekannt",
-    "costs": "500.000 - 1.000.000 EUR (Sanierung/Modernisierung)",
-    "verdict": "Nur für erfahrene Gewerbeinvestoren mit ausreichend Kapital. Maximales Gebot sollte 7,5 Mio. € nicht überschreiten, um Risiken zu kompensieren.",
-    "bid": "7.0-7.5 Mio. EUR",
-    "zvg_link": "https://www.zvg-portal.de/index.php?button=showZvg&zvg_id=167955&land_abk=nw",
-    "photos": []
-  },
-  {
     "id": "377004",
     "addr": "Merkenicher Str. 180, 50735 Köln-Niehl",
     "bezirk": "Niehl",
@@ -1873,52 +1292,6 @@ const DATA=[
       "pic/thmb/377024_img8.jpeg",
       "pic/thmb/377024_img9.jpeg"
     ]
-  },
-  {
-    "id": "377201",
-    "addr": "Süllenstraße 36, 40599 Düsseldorf-Hassels",
-    "bezirk": "Hassels",
-    "type": "Haus",
-    "wfl": 144,
-    "rooms": null,
-    "bj": 1972,
-    "vw": 480000,
-    "date": "2026-08-18",
-    "beschluss": true,
-    "gutachten": true,
-    "pros": [
-      "Zweifamilienhaus mit Doppelgarage und großem Grundstück (575 m²)",
-      "Gutachten und Beschluss vorhanden, klare rechtliche Grundlage",
-      "Verkehrswert von 480.000 € liegt nahe am Ertragswert, konservative Bewertung"
-    ],
-    "cons": [
-      "Kaum modernisiert, Instandhaltungsstau (Heizung, Elektro, Dachterrasse)",
-      "Lage nahe Bahntrasse und Gewerbegebiet, Lärmbelastung",
-      "DG-Wohnung nicht besichtigt, Mieter zahlt keine Miete"
-    ],
-    "risks": "Hauptrisiken: Instandhaltungsstau (ca. 25.000 €), nicht besichtigtes DG, niedrige Mieteinnahmen durch Staffelmiete und mietfreies DG, Lage mit Lärmimmissionen.",
-    "risk": "med",
-    "markt": "350-400 kEUR",
-    "discount": "~10-15% unter Markt",
-    "liqui": "mittel",
-    "miete": "1400-1700 EUR/Mo",
-    "yld": "~3.5-4.0%",
-    "costs": "25-50 kEUR",
-    "verdict": "Kaufempfehlung für Investoren mit Sanierungsbereitschaft. Maximalgebot 350.000 €, um ausreichend Rendite zu erzielen.",
-    "bid": "300-350 kEUR",
-    "zvg_link": "https://www.zvg-portal.de/index.php?button=showZvg&zvg_id=168020&land_abk=nw",
-    "photos": [
-      "pic/thmb/377201_img1.png",
-      "pic/thmb/377201_img10.jpeg",
-      "pic/thmb/377201_img2.png",
-      "pic/thmb/377201_img3.png",
-      "pic/thmb/377201_img4.png",
-      "pic/thmb/377201_img5.jpeg",
-      "pic/thmb/377201_img6.jpeg",
-      "pic/thmb/377201_img7.jpeg",
-      "pic/thmb/377201_img8.jpeg",
-      "pic/thmb/377201_img9.jpeg"
-    ]
   }
 ];
 const typeColor={"Wohnung":"background:#e6f1fb;color:#185fa5","Haus":"background:#eaf3de;color:#3b6d11","Gewerbe":"background:#faeeda;color:#854f0b","Erbbaurecht":"background:#fbeaf0;color:#993556","Lager":"background:#f1efe8;color:#5f5e5a","Garage":"background:#f1efe8;color:#5f5e5a","Stellplatz":"background:#f1efe8;color:#5f5e5a","Sonstiges":"background:#f1efe8;color:#5f5e5a"};
@@ -1931,11 +1304,14 @@ if(tf)data=data.filter(d=>d.type===tf);
 if(rf)data=data.filter(d=>d.risk===rf);
 if(search)data=data.filter(d=>(d.addr||"").toLowerCase().includes(search)||(d.bezirk||"").toLowerCase().includes(search));
 if(sf==="asc")data.sort((a,b)=>(a.vw||0)-(b.vw||0));else if(sf==="desc")data.sort((a,b)=>(b.vw||0)-(a.vw||0));else data.sort((a,b)=>(a.date||"z").localeCompare(b.date||"z"));
-document.getElementById("grid").innerHTML=data.map(d=>`<div class="card"><div class="card-head"><span class="card-id">#${d.id}</span><span class="card-type" style="${typeColor[d.type]||typeColor["Sonstiges"]}">${d.type||"?"}</span></div><div class="card-addr">${d.addr||"Unbekannt"}</div><div class="card-sub">${d.bezirk||""}${d.wfl?" · "+d.wfl+" m²":""}${d.rooms?" · "+d.rooms+" Zi":""}${d.bj?" · BJ "+d.bj:""}</div>${(d.photos||[]).length?`<div class="card-photos">${d.photos.map(p=>`<img src="${p}" alt="Foto" loading="lazy">`).join("")}</div>`:""}<div class="card-price">${fmtPrice(d.vw)} <span class="date-badge">${d.date||"?"}</span></div><div class="risk-row"><span class="risk-badge risk-${d.risk||"med"}">${riskLabel[d.risk]||d.risk}</span><span class="date-badge">${d.discount||""}</span></div>${(d.pros||[]).length||(d.cons||[]).length?`<div class="pros-cons"><div><div class="pc-label">Pro</div><ul class="pc-list">${(d.pros||[]).map(p=>`<li>+ ${p}</li>`).join("")}</ul></div><div><div class="pc-label">Contra</div><ul class="pc-list">${(d.cons||[]).map(c=>`<li>− ${c}</li>`).join("")}</ul></div></div>`:""}<div class="fin-block"><div class="fin-row"><span class="fin-label">Marktpreis</span><span>${d.markt||"—"}</span></div><div class="fin-row"><span class="fin-label">Miete</span><span>${d.miete||"—"}</span></div><div class="fin-row"><span class="fin-label">Rendite</span><span>${d.yld||"—"}</span></div><div class="fin-row"><span class="fin-label">Liquiditaet</span><span>${d.liqui||"—"}</span></div><div class="fin-row"><span class="fin-label">Risiken</span><span style="text-align:right;max-width:180px">${d.risks||"—"}</span></div></div><div class="verdict">${d.verdict||""}</div><div class="sources"><span class="${d.beschluss?"src-yes":"src-no"}">Beschluss ${d.beschluss?"OK":"—"}</span><span class="${d.gutachten?"src-yes":"src-no"}">Gutachten ${d.gutachten?"OK":"—"}</span></div>${d.zvg_link?`<a href="${d.zvg_link}" target="_blank" rel="noopener" class="zvg-link">ZVG-Portal &rarr;</a>`:""}</div>`).join("");
+document.getElementById("grid").innerHTML=data.map(d=>`<div class="card"><div class="card-head"><span class="card-id">#${d.id}</span><span class="card-type" style="${typeColor[d.type]||typeColor["Sonstiges"]}">${d.type||"?"}</span></div><div class="card-addr">${d.addr||"Unbekannt"}</div><div class="card-sub">${d.bezirk||""}${d.wfl?" · "+d.wfl+" m²":""}${d.rooms?" · "+d.rooms+" Zi":""}${d.bj?" · BJ "+d.bj:""}</div>${(d.photos||[]).length?`<div class="card-photos">${d.photos.map(p=>`<img src="${p}" alt="Foto" loading="lazy" onclick="event.stopPropagation();openLightbox('${p.replace('/thmb/','/')}')">`).join("")}</div>`:""}<div class="card-price">${fmtPrice(d.vw)} <span class="date-badge">${d.date||"?"}</span></div><div class="risk-row"><span class="risk-badge risk-${d.risk||"med"}">${riskLabel[d.risk]||d.risk}</span><span class="date-badge">${d.discount||""}</span></div>${(d.pros||[]).length||(d.cons||[]).length?`<div class="pros-cons"><div><div class="pc-label">Pro</div><ul class="pc-list">${(d.pros||[]).map(p=>`<li>+ ${p}</li>`).join("")}</ul></div><div><div class="pc-label">Contra</div><ul class="pc-list">${(d.cons||[]).map(c=>`<li>− ${c}</li>`).join("")}</ul></div></div>`:""}<div class="fin-block"><div class="fin-row"><span class="fin-label">Marktpreis</span><span>${d.markt||"—"}</span></div><div class="fin-row"><span class="fin-label">Miete</span><span>${d.miete||"—"}</span></div><div class="fin-row"><span class="fin-label">Rendite</span><span>${d.yld||"—"}</span></div><div class="fin-row"><span class="fin-label">Liquiditaet</span><span>${d.liqui||"—"}</span></div><div class="fin-row"><span class="fin-label">Risiken</span><span style="text-align:right;max-width:180px">${d.risks||"—"}</span></div></div><div class="verdict">${d.verdict||""}</div><div class="sources"><span class="${d.beschluss?"src-yes":"src-no"}">Beschluss ${d.beschluss?"OK":"—"}</span><span class="${d.gutachten?"src-yes":"src-no"}">Gutachten ${d.gutachten?"OK":"—"}</span></div>${d.zvg_link?`<a href="${d.zvg_link}" target="_blank" rel="noopener" class="zvg-link">ZVG-Portal &rarr;</a>`:""}</div>`).join("");
 document.getElementById("no-results").style.display=data.length?"none":"block";
 const vws=data.map(d=>d.vw).filter(v=>v);if(vws.length){document.getElementById("s-min").textContent=fmtPrice(Math.min(...vws));document.getElementById("s-max").textContent=fmtPrice(Math.max(...vws))}
 const dates=data.map(d=>d.date).filter(d=>d&&d!=="unbekannt").sort();if(dates.length)document.getElementById("s-next").textContent=dates[0]
 }
+function openLightbox(src){document.getElementById('lightbox-img').src=src;document.getElementById('lightbox').classList.add('show')}
+function closeLightbox(){document.getElementById('lightbox').classList.remove('show')}
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeLightbox()});
 render();
 </script>
 </body>
