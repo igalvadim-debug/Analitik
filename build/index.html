@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Zwangsversteigerung Köln 2026 — 27 Objekte</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:#f5f5f2;color:#1a1a18;padding:1.5rem}
+.header{padding-bottom:1rem;border-bottom:1px solid #e0dfd8;margin-bottom:1.5rem}
+.header h1{font-size:22px;font-weight:500}
+.header p{font-size:14px;color:#888780;margin-top:4px}
+.filters{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:1.25rem;align-items:center}
+.filters select,.filters input{font-size:13px;padding:6px 10px;border:1px solid #d3d1c7;border-radius:8px;background:#fff;color:#1a1a18}
+.filters label{font-size:13px;color:#5f5e5a}
+.stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:1.5rem}
+.stat{background:#ededea;border-radius:8px;padding:12px 14px}
+.stat-label{font-size:12px;color:#888780;margin-bottom:4px}
+.stat-val{font-size:20px;font-weight:500}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(310px,1fr));gap:12px}
+.card{background:#fff;border:1px solid #e0dfd8;border-radius:12px;padding:1rem 1.125rem;transition:border-color 0.15s}
+.card:hover{border-color:#b4b2a9}
+.card-head{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px}
+.card-id{font-size:12px;color:#888780}
+.card-type{font-size:11px;padding:2px 8px;border-radius:8px;font-weight:500}
+.card-addr{font-size:15px;font-weight:500;margin-bottom:4px}
+.card-sub{font-size:13px;color:#888780;margin-bottom:10px}
+.card-price{font-size:22px;font-weight:500;margin-bottom:8px}
+.card-row{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px}
+.pill{font-size:11px;padding:2px 8px;border-radius:20px;border:1px solid #e0dfd8;color:#5f5e5a}
+.risk-row{display:flex;gap:6px;margin-bottom:10px;align-items:center;flex-wrap:wrap}
+.risk-badge{font-size:11px;padding:3px 9px;border-radius:8px;font-weight:500}
+.risk-low{background:#eaf3de;color:#3b6d11}
+.risk-med{background:#faeeda;color:#854f0b}
+.risk-high{background:#fcebeb;color:#a32d2d}
+.fin-block{background:#f5f5f2;border-radius:8px;padding:8px 10px;margin-bottom:10px;font-size:12px}
+.fin-row{display:flex;justify-content:space-between;margin-bottom:4px}
+.fin-row:last-child{margin-bottom:0}
+.fin-label{color:#888780}
+.verdict{font-size:12px;color:#5f5e5a;line-height:1.5;border-top:1px solid #e0dfd8;padding-top:8px}
+.verdict b{color:#1a1a18;font-weight:500}
+.sources{display:flex;gap:6px;margin-top:8px}
+.src-yes{background:#e1f5ee;color:#0f6e56;font-size:10px;padding:2px 7px;border-radius:10px;font-weight:500}
+.src-no{background:#f1efe8;color:#5f5e5a;font-size:10px;padding:2px 7px;border-radius:10px}
+.date-badge{font-size:11px;color:#5f5e5a;background:#f1efe8;padding:2px 8px;border-radius:8px}
+.no-results{text-align:center;padding:3rem;color:#888780;font-size:14px}
+.pros-cons{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px}
+.pc-label{font-size:11px;color:#888780;margin-bottom:4px;font-weight:500;text-transform:uppercase;letter-spacing:0.04em}
+.pc-list{list-style:none;padding:0}
+.pc-list li{font-size:12px;color:#5f5e5a;margin-bottom:3px}
+@media(max-width:600px){.stats-row{grid-template-columns:repeat(2,1fr)}.grid{grid-template-columns:1fr}.pros-cons{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>Zwangsversteigerung Köln 2026</h1>
+  <p>Amtsgericht Köln &middot; 27 Objekte &middot; Reichenspergerplatz 1</p>
+</div>
+
+<div class="stats-row">
+  <div class="stat"><div class="stat-label">Objekte gesamt</div><div class="stat-val" id="s-total">27</div></div>
+  <div class="stat"><div class="stat-label">Min. Verkehrswert</div><div class="stat-val" id="s-min">—</div></div>
+  <div class="stat"><div class="stat-label">Max. Verkehrswert</div><div class="stat-val" id="s-max">—</div></div>
+  <div class="stat"><div class="stat-label">Nächster Termin</div><div class="stat-val" id="s-next">—</div></div>
+</div>
+
+<div class="filters">
+  <label>Тип:</label>
+  <select id="f-type" onchange="render()">
+    <option value="">Все</option>
+    <option value="Wohnung">Wohnung</option>
+    <option value="Haus">Haus / Reihenhaus</option>
+    <option value="Gewerbe">Gewerbe</option>
+    <option value="Erbbaurecht">Erbbaurecht</option>
+    <option value="Lager">Lagerraum</option>
+  </select>
+  <label>Риск:</label>
+  <select id="f-risk" onchange="render()">
+    <option value="">Все</option>
+    <option value="low">Низкий</option>
+    <option value="med">Средний</option>
+    <option value="high">Высокий</option>
+  </select>
+  <label>Сортировка:</label>
+  <select id="f-sort" onchange="render()">
+    <option value="date">По дате</option>
+    <option value="asc">Цена ↑</option>
+    <option value="desc">Цена ↓</option>
+  </select>
+  <input type="text" id="f-search" placeholder="Поиск по адресу, р-ну…" oninput="render()" style="min-width:160px">
+</div>
+
+<div class="grid" id="grid"></div>
+<div class="no-results" id="no-results" style="display:none">Ничего не найдено</div>
+
+<script>
+const DATA = [
+  {id:"374531",addr:"Kielsweg 10",bezirk:"Köln-Poll",type:"Haus",wfl:117,rooms:null,bj:1983,vw:587700,date:"2026-06-24",beschluss:true,gutachten:true,pros:["Grundstück 411 m²","Ruhige Lage Poll","1/3 MEA Wegefläche inkl."],cons:["Keine Innenbesichtigung","Fertighaus — Qualität unbekannt","Erschließung nur über Baulast"],risks:"Baulasteintragung; keine Innenkenntnis; Fertighaus-Bausubstanz",risk:"med",markt:"580–650 k€",discount:"marktkonform",liqui:"mittel",miete:"1.800–2.200 €/Mo",yld:"~4%",costs:"Renovierung 20–40k€",verdict:"Für Eigennutzer/Investor mit Renovierungsbereitschaft. Max. Gebot ca. <b>520–550k€</b>.",bid:"520–550 k€"},
+  {id:"374741",addr:"Winkelfeld 9",bezirk:"Köln-Rath/Heumar",type:"Erbbaurecht",wfl:123,rooms:5,bj:1960,vw:318000,date:"2026-06-17",beschluss:true,gutachten:false,pros:["Preis unter Marktniveau","Viel Wohnfläche 123 m²","Garage + DG Studio"],cons:["Nur Beschluss, kein Gutachten","Erbbaurecht — Zustimmung Eigentümer nötig","Baujahr 1960er"],risks:"Erbbaurecht-Veräußerung nur mit Zustimmung; kein Gutachten; Erbbauzinsen unbekannt",risk:"high",markt:"380–420 k€ (ohne Erbbaurecht)",discount:"deutlich unter Markt",liqui:"niedrig",miete:"1.200–1.400 €/Mo",yld:"~5% minus Erbbauzins",costs:"Sanierung 40–80k€",verdict:"Nur für erfahrene Käufer. Erbbaurecht kritisch prüfen. Max. Gebot <b>260–280k€</b>.",bid:"260–280 k€"},
+  {id:"374743",addr:"Hinweisblatt AG Köln",bezirk:"—",type:"Info",wfl:null,rooms:null,bj:null,vw:null,date:"2026-06-17",beschluss:true,gutachten:false,pros:["Verfahrenshinweise AG Köln"],cons:["Kein eigenständiges Objekt","Kein Verkehrswert"],risks:"—",risk:"low",markt:"—",discount:"—",liqui:"—",miete:"—",yld:"—",costs:"—",verdict:"Kein Kaufobjekt. Allgemeine Verfahrenshinweise.",bid:"—"},
+  {id:"374752",addr:"Luzerner Weg 19",bezirk:"Köln-Mülheim",type:"Haus",wfl:83,rooms:null,bj:1956,vw:430000,date:"2026-07-01",beschluss:true,gutachten:true,pros:["Grundstück 586 m²","REH mit Garage","Modernisierungen erkennbar"],cons:["Keine Innenbesichtigung","Baujahr 1956","Verwildertes Grundstück"],risks:"Keine Innenkenntnis; ältere Bausubstanz; Sanierungskosten unbekannt",risk:"med",markt:"420–480 k€",discount:"marktkonform",liqui:"mittel",miete:"1.400–1.600 €/Mo",yld:"~4.5%",costs:"Sanierung 30–60k€",verdict:"Solides REH in Mülheim, ohne Innencheck riskant. Max. Gebot <b>380–400k€</b>.",bid:"380–400 k€"},
+  {id:"374911",addr:"Höxterstraße 13",bezirk:"Köln-Brück",type:"Haus",wfl:199,rooms:null,bj:1958,vw:600000,date:"2026-07-07",beschluss:true,gutachten:true,pros:["Große Wohnfläche 199 m²","Grundstück 776 m²","Doppelhaushälfte + Garage"],cons:["Starker Sanierungsstau","Erweiterungen ohne Baugenehmigung","Kein Innencheck"],risks:"Baurechtsrisiko ungenehmigter Erweiterungen; starker Instandhaltungsstau",risk:"high",markt:"680–750 k€ (saniert)",discount:"~15–20% unter Markt",liqui:"mittel",miete:"2.200–2.600 €/Mo",yld:"~4%",costs:"Sanierung 80–150k€",verdict:"Für erfahrene Sanierer. Baurecht prüfen. Max. Gebot <b>520–550k€</b>.",bid:"520–550 k€"},
+  {id:"374949",addr:"Im Hasengarten 36",bezirk:"Köln-Hahnwald",type:"Haus",wfl:251,rooms:null,bj:1963,vw:4310000,date:"2026-07-15",beschluss:true,gutachten:true,pros:["Premiumlage Hahnwald","Riesiges Grundstück 3.021 m²","Neubau möglich"],cons:["Gebäude abbruchreif","Abrisskosten 100–200k€","Gesamtinvestition > 5 Mio €"],risks:"Komplettsanierung unmöglich; Abriss + Neubau; sehr langer Zeithorizont",risk:"high",markt:"4.5–5.5 Mio €",discount:"marktkonform als Bauland",liqui:"niedrig",miete:"8.000+ €/Mo nach Neubau",yld:"~3.5%",costs:"Abriss + Neubau 1.5–2.5 Mio €",verdict:"Nur für Developer/UHNW. Hahnwald = Toplage Kölns. Max. Gebot <b>3.8–4.0 Mio €</b>.",bid:"3,8–4,0 Mio €"},
+  {id:"375242",addr:"Hans-Katzer-Str. 34",bezirk:"Köln-Junkersdorf",type:"Haus",wfl:146,rooms:null,bj:2002,vw:790000,date:"2026-07-01",beschluss:true,gutachten:true,pros:["Baujahr 2002 — junges Haus","Junkersdorf: Top-Lage West","2 PKW-Stellplätze"],cons:["Keine Innenbesichtigung","Grundstück nur 299 m²","Preis hoch, Rendite gering"],risks:"Keine Innenkenntnis; niedriger Rendite-Hebel",risk:"low",markt:"820–900 k€",discount:"~5% unter Markt",liqui:"hoch",miete:"2.400–2.800 €/Mo",yld:"~3.8%",costs:"Ggf. Renovierung 10–20k€",verdict:"Top-Lage, geringes Risiko. Eher Eigennutzer. Max. Gebot <b>750–770k€</b>.",bid:"750–770 k€"},
+  {id:"375310",addr:"Ernst-Mühlendyck-Str. 1",bezirk:"Köln-Porz",type:"Wohnung",wfl:29,rooms:1,bj:1995,vw:114000,date:"2026-06-15",beschluss:true,gutachten:true,pros:["Niedrigster Einstiegspreis","TG-Stellplatz inklusive","Baujahr 1995"],cons:["Sehr klein: 29 m²","Keine Innenbesichtigung","Porz: eingeschränkte Nachfrage"],risks:"Zustand unbekannt; hoher Hausgeld-Anteil bei kleiner WE möglich",risk:"med",markt:"110–130 k€",discount:"marktkonform",liqui:"mittel",miete:"450–550 €/Mo",yld:"~5.5%",costs:"Ggf. Renovierung 5–10k€",verdict:"Kleinstwohnung mit TG-Platz. Für Mikroinvestor. Max. Gebot <b>100–105k€</b>.",bid:"100–105 k€"},
+  {id:"375530",addr:"Krüthstraße 7",bezirk:"Köln-Nippes",type:"Wohnung",wfl:148,rooms:5,bj:1925,vw:590000,date:"2026-07-15",beschluss:true,gutachten:true,pros:["Nippes: sehr gefragte Lage","5 Zimmer + 2 Balkone + 2 Keller","PV-Anlage vorhanden"],cons:["Baujahr 1925","Aufhebung Gemeinschaft","PV noch nicht angeschlossen"],risks:"Altbau 1925 — versteckte Mängel; WEG-Rücklage prüfen",risk:"med",markt:"600–680 k€",discount:"~5% unter Markt",liqui:"hoch",miete:"2.000–2.400 €/Mo",yld:"~4.5%",costs:"PV-Anschluss + Renovierung 10–20k€",verdict:"Attraktive große Wohnung Nippes. Eigennutzer top. Max. Gebot <b>560–580k€</b>.",bid:"560–580 k€"},
+  {id:"375579",addr:"Grüner Weg 11",bezirk:"Köln-50767",type:"Wohnung",wfl:null,rooms:null,bj:null,vw:530000,date:"2026-?",beschluss:false,gutachten:true,pros:["Vollständiges Gutachten","Lastenfreier Wert klar 530k€"],cons:["Kein Beschluss — kein Termin bekannt","50767 = schwächere Lage"],risks:"Termin unbekannt; Lage beeinflusst Weiterverkauf",risk:"med",markt:"480–560 k€",discount:"marktkonform",liqui:"mittel",miete:"1.500–1.800 €/Mo",yld:"~4%",costs:"Unbekannt",verdict:"Interessant, aber noch kein Termin. Gutachten einsehen. Max. Gebot <b>~480k€</b>.",bid:"~480 k€"},
+  {id:"375787",addr:"Dreifelder Weg 20",bezirk:"Köln-Lindweiler",type:"Haus",wfl:103,rooms:3,bj:1973,vw:300000,date:"2026-06-29",beschluss:true,gutachten:true,pros:["Niedrige Eintrittsschwelle","Garage inklusive","Vollunterkellert"],cons:["Baujahr 1973","Keine Innenbesichtigung","Lindweiler: periphere Lage"],risks:"Keine Innenkenntnis; Baujahr 1973; Sanierungskosten möglich",risk:"med",markt:"300–340 k€",discount:"marktkonform",liqui:"mittel",miete:"1.200–1.400 €/Mo",yld:"~5%",costs:"Modernisierung 20–40k€",verdict:"Günstigstes REH im Portfolio. Berufseinsteiger/Investor. Max. Gebot <b>270–285k€</b>.",bid:"270–285 k€"},
+  {id:"375821",addr:"Graseggerstr. 139",bezirk:"Köln-Longerich",type:"Gewerbe",wfl:249,rooms:9,bj:1956,vw:640000,date:"2026-08-25",beschluss:true,gutachten:true,pros:["9 Wohneinheiten + Ladenlokal","5/10+7/10 Grenzen weggefallen!","Eckgebäude"],cons:["Baujahr 1956","1 Wohnung ohne Baugenehmigung","Mäßiger Zustand"],risks:"Wohnung ohne Baugenehmigung; Instandsetzungsbedarf; Mieter-Risiko",risk:"high",markt:"620–700 k€",discount:"marktkonform",liqui:"mittel",miete:"3.500–4.500 €/Mo gesamt",yld:"~6.5% brutto",costs:"Instandsetzung 50–100k€",verdict:"MFH-Investor. Ohne Wertgrenzen — Gebot ab 320k€ möglich. Max. sinnvoll <b>560–580k€</b>.",bid:"560–580 k€"},
+  {id:"376147",addr:"Diepeschrather Str. 29",bezirk:"Köln-Dellbrück",type:"Wohnung",wfl:87,rooms:4,bj:1950,vw:410000,date:"2026-09-08",beschluss:true,gutachten:true,pros:["Kernsaniert 2010–2012","4 Zimmer + Balkon + Garten","44 m² Keller"],cons:["Instandhaltungsstau Sondereigentum","EG-Lage","Baujahr 1950"],risks:"Instandhaltungsstau; WEG-Rücklage unbekannt",risk:"med",markt:"420–460 k€",discount:"~5% unter Markt",liqui:"mittel",miete:"1.400–1.600 €/Mo",yld:"~4.5%",costs:"Renovierung SE 15–30k€",verdict:"Solide Wohnung, Garten attraktiv. Max. Gebot <b>375–390k€</b>.",bid:"375–390 k€"},
+  {id:"376242",addr:"Unterer Herbstweg 14",bezirk:"Köln-Merkenich",type:"Gewerbe",wfl:null,rooms:null,bj:null,vw:249000,date:"2026-07-13",beschluss:true,gutachten:true,pros:["Gewerbegrundstück 1.223 m²","Zubehör inklusive"],cons:["Keine Baugenehmigung","Landwirtschaftsfläche","Randlage"],risks:"Keine Baugenehmigung für Gebäude; Nutzungsänderung unsicher",risk:"high",markt:"200–260 k€",discount:"marktkonform",liqui:"niedrig",miete:"unklar ohne Baurecht",yld:"unklar",costs:"Baugenehmigung + ggf. Rückbau",verdict:"Nur für Gewerbetreibende mit Nutzungskonzept. Max. Gebot <b>200–220k€</b>.",bid:"200–220 k€"},
+  {id:"376324",addr:"Aloeweg 91",bezirk:"Köln-Merheim",type:"Haus",wfl:122,rooms:null,bj:2013,vw:568000,date:"2026-07-06",beschluss:true,gutachten:true,pros:["Baujahr 2013 — sehr jung","Fernwärme + 2 Stellplätze","Geringes technisches Risiko"],cons:["Wintergarten ohne Baugenehmigung","Grundstück nur 232 m²","8 Grundbuchpositionen"],risks:"Wintergarten-Genehmigung nachholen; komplexes Grundbuch",risk:"low",markt:"580–640 k€",discount:"~5% unter Markt",liqui:"hoch",miete:"1.800–2.100 €/Mo",yld:"~4%",costs:"Wintergarten-Genehmigung ~2–5k€",verdict:"Top-Objekt: junges Haus, gute Lage. Max. Gebot <b>530–545k€</b>.",bid:"530–545 k€"},
+  {id:"376458",addr:"Am Courts Garten 2",bezirk:"Köln-Zündorf",type:"Gewerbe",wfl:248,rooms:null,bj:1983,vw:758000,date:"2026-09-21",beschluss:true,gutachten:true,pros:["Vermietet — Sofortrendite","Guter Ausbau- und Unterhaltungszustand","Zündorf: ruhige Rheinlage"],cons:["TG-Stellplatz nur 2,30 m breit","Gewerbe = Leerstandsrisiko","2 Außenstellplätze eingeschränkt"],risks:"Mieter-Risiko Arztpraxis; Stellplatz-Nutzbarkeit eingeschränkt",risk:"med",markt:"700–800 k€",discount:"marktkonform",liqui:"niedrig",miete:"3.500–4.500 €/Mo",yld:"~5.5%",costs:"Gering aktuell",verdict:"Gewerblicher Investor, laufende Mieteinnahmen. Max. Gebot <b>700–720k€</b>.",bid:"700–720 k€"},
+  {id:"376623",addr:"Kleeweg 4",bezirk:"Köln-Wahn",type:"Haus",wfl:137,rooms:null,bj:1969,vw:760000,date:"2026-09-16",beschluss:true,gutachten:true,pros:["Freistehendes EFH","Grundstück 1.014 m²","Garage + Carport"],cons:["Baujahr 1969/70","Nähe Militärflughafen (Lärm)","Einstöckig"],risks:"Flughafennähe drückt Preise; Baujahr 1969 — Haustechnik veraltet",risk:"med",markt:"720–800 k€",discount:"marktkonform",liqui:"mittel",miete:"2.200–2.600 €/Mo",yld:"~3.8%",costs:"Modernisierung 30–50k€",verdict:"Viel Grundstück, gute Substanz. Flughafen prüfen. Max. Gebot <b>700–720k€</b>.",bid:"700–720 k€"},
+  {id:"376667",addr:"An der Schanz 2",bezirk:"Köln-Riehl",type:"Wohnung",wfl:62,rooms:2,bj:1970,vw:235000,date:"2026-08-05",beschluss:true,gutachten:true,pros:["AXA-Hochhaus denkmalgeschützt","Steuervorteile Denkmal","Rhein-/Stadtblick"],cons:["Modernisierungsrückstau","Veraltete Heizung + Fenster","Hausgeld bei 352 WE potenziell hoch"],risks:"Denkmalschutz schränkt Eigenmaßnahmen ein; Hausgeld unbekannt; Balkonsanierung läuft",risk:"high",markt:"240–270 k€",discount:"~5% unter Markt",liqui:"mittel",miete:"900–1.100 €/Mo",yld:"~5% brutto",costs:"Modernisierung 15–25k€ + lfd. Hausgeld",verdict:"Liebhaberobjekt. Hausgeld unbedingt prüfen. Max. Gebot <b>210–220k€</b>.",bid:"210–220 k€"},
+  {id:"376704",addr:"Hermesgasse 110/110a",bezirk:"Köln-Niehl",type:"Haus",wfl:115,rooms:null,bj:1850,vw:355000,date:"2026-07-29",beschluss:true,gutachten:true,pros:["Zwei Wohnungen flex Nutzung","Dachterrasse in 110a","Niehl: Entwicklungsgebiet"],cons:["Baujahr Mitte 19. Jh.","Nr. 110 ohne Bad","Massiver Modernisierungsbedarf"],risks:"Extrem alte Bausubstanz; Kernsanierung nötig; Niehl noch Aufwertungsgebiet",risk:"high",markt:"380–420 k€ (saniert)",discount:"deutlich unter Markt",liqui:"niedrig",miete:"1.400–1.800 €/Mo",yld:"~5%",costs:"Sanierung 100–180k€",verdict:"Für ambitionierte Sanierer. Kernsanierung unvermeidbar. Max. Gebot <b>300–320k€</b>.",bid:"300–320 k€"},
+  {id:"376720",addr:"Stolberger Str. 204b",bezirk:"Köln-Braunsfeld",type:"Wohnung",wfl:28,rooms:1,bj:null,vw:76000,date:"2026-08-18",beschluss:true,gutachten:true,pros:["Niedrigster Wohnungs-Verkehrswert","Braunsfeld: gute Lage"],cons:["Nur 28 m²","Keine Innenbesichtigung","Vermietet — Eigenbedarf ausgeschlossen"],risks:"Zustand unbekannt; Mieter-Risiko; Hausgeld unbekannt",risk:"med",markt:"80–95 k€",discount:"~10% unter Markt",liqui:"hoch",miete:"400–480 €/Mo",yld:"~6.5%",costs:"Ggf. Renovierung 3–8k€",verdict:"Mikroapartment Braunsfeld. Studenten/Pendler. Max. Gebot <b>68–72k€</b>.",bid:"68–72 k€"},
+  {id:"376764",addr:"Marzellenstr. 26",bezirk:"Köln-Altstadt Nord",type:"Gewerbe",wfl:null,rooms:null,bj:null,vw:770000,date:"2026-09-03",beschluss:true,gutachten:true,pros:["Altstadt Nord Premium","Nähe Hbf/Dom"],cons:["Kein Gutachten einsehbar","Keine Flächenangabe","Kein Innencheck"],risks:"Viele Unbekannte; Gewerbeimmobilie Altstadt volatil",risk:"high",markt:"750–900 k€",discount:"marktkonform",liqui:"niedrig",miete:"3.000–5.000 €/Mo",yld:"~5.5%",costs:"Unbekannt",verdict:"Nur auf Basis des Gutachtens vor Ort zu bewerten. Max. Gebot <b>680–700k€</b>.",bid:"680–700 k€"},
+  {id:"376786",addr:"Komödienstraße 5",bezirk:"Köln-Altstadt Nord",type:"Gewerbe",wfl:223,rooms:null,bj:1949,vw:1310000,date:"2026-09-30",beschluss:true,gutachten:false,pros:["Premiumlage Altstadt","Denkmalschutz-Steuervorteile","Ladenlokal + 3 Wohnungen"],cons:["Nur Beschluss, kein Gutachten","Altbaustandard 1949","Hoher Einstiegspreis"],risks:"Denkmalschutzauflagen; Leerstand Ladenlokal riskant; Altbausubstanz",risk:"med",markt:"1.2–1.5 Mio €",discount:"marktkonform",liqui:"mittel",miete:"5.800–7.000 €/Mo laut Gutachten",yld:"~5.3%",costs:"Modernisierung mit Denkmalauflagen",verdict:"Einzigartiges Objekt Toplage. Für institutionellen Investor. Max. Gebot <b>1,1–1,2 Mio €</b>.",bid:"1,1–1,2 Mio €"},
+  {id:"376794",addr:"Odenwaldstr. 49 (Nr. 17)",bezirk:"Köln-Humboldt/Gremberg",type:"Lager",wfl:4,rooms:null,bj:1950,vw:2700,date:"2026-09-22",beschluss:true,gutachten:true,pros:["Vermietet","Einstieg unter 3.000 €"],cons:["4 m² — kein Investment","Miete ~15 €/Mo","WEG-abhängig"],risks:"Minimal",risk:"low",markt:"2.500–3.500 €",discount:"marktkonform",liqui:"sehr niedrig",miete:"15–20 €/Mo",yld:"~7%",costs:"Minimal",verdict:"Kleinstobjekt. Kein Investment. Max. Gebot <b>2.400 €</b>.",bid:"2.400 €"},
+  {id:"376940",addr:"Grafenmühlenweg 170",bezirk:"Köln-Dellbrück",type:"Haus",wfl:143,rooms:null,bj:1924,vw:580000,date:"2026-09-16",beschluss:true,gutachten:true,pros:["Dellbrück: gute Wohnlage","Grundstück 976 m²","Garage + Stellplatz"],cons:["Baujahr 1924","Hoher Sanierungs-/Modernisierungsrückstau","Baumängel und -schäden"],risks:"Erheblicher Sanierungsbedarf; Baumängel; Aufhebung Gemeinschaft",risk:"high",markt:"620–700 k€ (saniert)",discount:"~15% unter Markt",liqui:"mittel",miete:"2.000–2.400 €/Mo nach Sanierung",yld:"~4.5%",costs:"Sanierung 100–200k€",verdict:"Für Sanierer mit Budget. Top-Grundstück Dellbrück. Max. Gebot <b>480–500k€</b>.",bid:"480–500 k€"},
+  {id:"376997",addr:"Komödienstr. 5 (Gutachten)",bezirk:"Köln-Altstadt Nord",type:"Gewerbe",wfl:223,rooms:null,bj:1949,vw:1310000,date:"2026-09-30",beschluss:false,gutachten:true,pros:["Vollständiges Gutachten zu 376786","Jahresrohertrag 84.732 €","Liegenschaftszins 3,25%"],cons:["Kein eigener Beschluss — gehört zu 376786"],risks:"Wie 376786",risk:"med",markt:"Wie 376786",discount:"Wie 376786",liqui:"Wie 376786",miete:"7.061 €/Mo (84.732 €/Jahr)",yld:"~5.3%",costs:"Wie 376786",verdict:"Gehört zu Objekt 376786. Separat nicht kaufbar.",bid:"—"},
+  {id:"377004",addr:"Merkenicher Str. 180",bezirk:"Köln-Niehl",type:"Haus",wfl:180,rooms:null,bj:1900,vw:680000,date:"2026-08-11",beschluss:true,gutachten:true,pros:["Großes Grundstück 1.050 m²","Scheune vorhanden","Niehl-Entwicklungsgebiet"],cons:["Hinterliegergrundstück — keine gesicherte Zuwegung","Baujahr vor 1900","Dringend sanierungsbedürftig"],risks:"Zuwegung NICHT rechtlich gesichert — kritisches Risiko; Baujahr vor 1900; Sanierung 150–250k€",risk:"high",markt:"650–750 k€ (mit gesicherter Zuwegung)",discount:"~15% Abschlag wegen Zuwegung",liqui:"niedrig",miete:"2.200–2.600 €/Mo nach Sanierung",yld:"~4%",costs:"Sanierung + Erschließung 200–300k€",verdict:"Zuwegung ist K.-o.-Kriterium. Max. Gebot <b>560–580k€</b> NUR wenn Zuwegung gesichert.",bid:"560–580 k€ (nur mit Zuwegung)"},
+  {id:"377024",addr:"Zorndorfstr. 3",bezirk:"Köln-Weidenpesch",type:"Wohnung",wfl:55,rooms:2,bj:1930,vw:160000,date:"2026-10-06",beschluss:true,gutachten:true,pros:["Günstige 2-Zi-Wohnung","Balkon + Kellerraum","Weidenpesch: zentrale Lage"],cons:["Keine Innenbesichtigung","Baujahr ~1930","Hausgeld unbekannt"],risks:"Keine Innenkenntnis; Altbau 1930; Hausgeld und Rücklage unbekannt",risk:"med",markt:"170–195 k€",discount:"~10% unter Markt",liqui:"hoch",miete:"700–850 €/Mo",yld:"~5.5%",costs:"Renovierung 8–15k€",verdict:"Günstiger Einstieg Weidenpesch. Kleinanleger. Max. Gebot <b>145–155k€</b>.",bid:"145–155 k€"}
+];
+
+const typeColor={
+  "Wohnung":"background:#e6f1fb;color:#185fa5",
+  "Haus":"background:#eaf3de;color:#3b6d11",
+  "Gewerbe":"background:#faeeda;color:#854f0b",
+  "Erbbaurecht":"background:#fbeaf0;color:#993556",
+  "Lager":"background:#f1efe8;color:#5f5e5a",
+  "Info":"background:#f1efe8;color:#5f5e5a"
+};
+const riskLabel={"low":"Низкий риск","med":"Средний риск","high":"Высокий риск"};
+
+function fmtPrice(v){
+  if(!v) return "—";
+  if(v>=1000000) return (v/1000000).toFixed(2).replace(/\.?0+$/,"")+" Mio €";
+  return (v/1000).toFixed(0)+" k€";
+}
+
+function render(){
+  const typeF=document.getElementById("f-type").value;
+  const riskF=document.getElementById("f-risk").value;
+  const sortF=document.getElementById("f-sort").value;
+  const search=document.getElementById("f-search").value.toLowerCase();
+  let data=[...DATA];
+  if(typeF) data=data.filter(d=>d.type===typeF);
+  if(riskF) data=data.filter(d=>d.risk===riskF);
+  if(search) data=data.filter(d=>(d.addr+d.bezirk).toLowerCase().includes(search));
+  if(sortF==="asc") data.sort((a,b)=>(a.vw||0)-(b.vw||0));
+  else if(sortF==="desc") data.sort((a,b)=>(b.vw||0)-(a.vw||0));
+  else data.sort((a,b)=>a.date.localeCompare(b.date));
+  document.getElementById("s-total").textContent=data.length;
+  const prices=data.filter(d=>d.vw>0).map(d=>d.vw);
+  document.getElementById("s-min").textContent=prices.length?fmtPrice(Math.min(...prices)):"—";
+  document.getElementById("s-max").textContent=prices.length?fmtPrice(Math.max(...prices)):"—";
+  const dates=data.filter(d=>d.date&&d.date!=="2026-?").map(d=>d.date).sort();
+  document.getElementById("s-next").textContent=dates.length?dates[0].replace("2026-",""):"—";
+  const grid=document.getElementById("grid");
+  const noR=document.getElementById("no-results");
+  if(!data.length){grid.innerHTML="";noR.style.display="block";return;}
+  noR.style.display="none";
+  grid.innerHTML=data.map(d=>{
+    const rc=d.risk==="low"?"risk-low":d.risk==="med"?"risk-med":"risk-high";
+    const tc=typeColor[d.type]||typeColor["Info"];
+    const prosH=d.pros.map(p=>`<li>&#10003; ${p}</li>`).join("");
+    const consH=d.cons.slice(0,3).map(c=>`<li>&#10007; ${c}</li>`).join("");
+    return `<div class="card">
+<div class="card-head">
+  <div>
+    <div class="card-id"># ${d.id}</div>
+    <div class="card-addr">${d.addr}</div>
+    <div class="card-sub">${d.bezirk}</div>
+  </div>
+  <div style="display:flex;flex-direction:column;align-items:flex-end;gap:5px">
+    <span class="card-type" style="${tc}">${d.type}</span>
+    <span class="date-badge">&#128197; ${d.date.replace("2026-","").replace("?","TBD")}</span>
+  </div>
+</div>
+<div class="card-price">${fmtPrice(d.vw)}<span style="font-size:13px;color:#888780;font-weight:400;margin-left:6px">Verkehrswert</span></div>
+<div class="card-row">
+  ${d.wfl?`<span class="pill">${d.wfl} m&sup2;</span>`:""}
+  ${d.rooms?`<span class="pill">${d.rooms} Zi.</span>`:""}
+  ${d.bj?`<span class="pill">Bj. ${d.bj}</span>`:""}
+</div>
+<div class="risk-row">
+  <span class="risk-badge ${rc}">${riskLabel[d.risk]}</span>
+  <span style="font-size:11px;color:#888780">Bid: <b style="color:#1a1a18">${d.bid}</b></span>
+</div>
+<div class="pros-cons">
+  <div><div class="pc-label">Плюсы</div><ul class="pc-list">${prosH}</ul></div>
+  <div><div class="pc-label">Минусы</div><ul class="pc-list">${consH}</ul></div>
+</div>
+<div class="fin-block">
+  <div class="fin-row"><span class="fin-label">Аренда</span><span>${d.miete}</span></div>
+  <div class="fin-row"><span class="fin-label">Доходность</span><span>${d.yld}</span></div>
+  <div class="fin-row"><span class="fin-label">Ликвидность</span><span>${d.liqui}</span></div>
+  <div class="fin-row"><span class="fin-label">Риски</span><span style="text-align:right;max-width:180px">${d.risks}</span></div>
+</div>
+<div class="verdict">${d.verdict}</div>
+<div class="sources">
+  <span class="${d.beschluss?"src-yes":"src-no"}">Beschluss ${d.beschluss?"✓":"✗"}</span>
+  <span class="${d.gutachten?"src-yes":"src-no"}">Gutachten ${d.gutachten?"✓":"✗"}</span>
+</div>
+</div>`;
+  }).join("");
+}
+
+render();
+</script>
+</body>
+</html>
