@@ -1,0 +1,11 @@
+.env
+*.pyc
+__pycache__/
+immovenv/
+venv/
+zvg_duss_koeln/
+build/pic/
+build/index.html
+analysis_cache.json
+debug_*.html
+debug_*.json

@@ -1,0 +1,6 @@
+playwright
+pypdf
+PyMuPDF
+Pillow
+requests
+gradio

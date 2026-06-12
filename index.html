@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="de">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Zwangsversteigerung Köln 2026 — 27 Objekte</title>
+<title>Zwangsversteigerung — 25 Objekte</title>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:#f5f5f2;color:#1a1a18;padding:1.5rem}
@@ -18,13 +18,16 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 .stat-label{font-size:12px;color:#888780;margin-bottom:4px}
 .stat-val{font-size:20px;font-weight:500}
 .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(310px,1fr));gap:12px}
-.card{background:#fff;border:1px solid #e0dfd8;border-radius:12px;padding:1rem 1.125rem;transition:border-color 0.15s}
+.card{background:#fff;border:1px solid #e0dfd8;border-radius:12px;padding:1rem 1.125rem;transition:border-color .15s}
 .card:hover{border-color:#b4b2a9}
 .card-head{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:10px}
 .card-id{font-size:12px;color:#888780}
 .card-type{font-size:11px;padding:2px 8px;border-radius:8px;font-weight:500}
 .card-addr{font-size:15px;font-weight:500;margin-bottom:4px}
 .card-sub{font-size:13px;color:#888780;margin-bottom:10px}
+.card-photos{display:flex;gap:4px;flex-wrap:wrap;margin-bottom:10px}
+.card-photos img{width:56px;height:42px;object-fit:cover;border-radius:6px;cursor:pointer;border:1px solid #e0dfd8;transition:transform .15s}
+.card-photos img:hover{transform:scale(2.2);z-index:10;border-color:#b4b2a9}
 .card-price{font-size:22px;font-weight:500;margin-bottom:8px}
 .card-row{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px}
 .pill{font-size:11px;padding:2px 8px;border-radius:20px;border:1px solid #e0dfd8;color:#5f5e5a}
@@ -45,170 +48,1236 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 .date-badge{font-size:11px;color:#5f5e5a;background:#f1efe8;padding:2px 8px;border-radius:8px}
 .no-results{text-align:center;padding:3rem;color:#888780;font-size:14px}
 .pros-cons{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px}
-.pc-label{font-size:11px;color:#888780;margin-bottom:4px;font-weight:500;text-transform:uppercase;letter-spacing:0.04em}
+.pc-label{font-size:11px;color:#888780;margin-bottom:4px;font-weight:500;text-transform:uppercase;letter-spacing:.04em}
 .pc-list{list-style:none;padding:0}
 .pc-list li{font-size:12px;color:#5f5e5a;margin-bottom:3px}
 @media(max-width:600px){.stats-row{grid-template-columns:repeat(2,1fr)}.grid{grid-template-columns:1fr}.pros-cons{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
-
 <div class="header">
-  <h1>Zwangsversteigerung Köln 2026</h1>
-  <p>Amtsgericht Köln &middot; 27 Objekte &middot; Reichenspergerplatz 1</p>
+<h1>Zwangsversteigerung &mdash; 25 Objekte</h1>
+<p>Analyse per DeepSeek &middot; 25 Objekte</p>
 </div>
-
 <div class="stats-row">
-  <div class="stat"><div class="stat-label">Objekte gesamt</div><div class="stat-val" id="s-total">27</div></div>
-  <div class="stat"><div class="stat-label">Min. Verkehrswert</div><div class="stat-val" id="s-min">—</div></div>
-  <div class="stat"><div class="stat-label">Max. Verkehrswert</div><div class="stat-val" id="s-max">—</div></div>
-  <div class="stat"><div class="stat-label">Nächster Termin</div><div class="stat-val" id="s-next">—</div></div>
+<div class="stat"><div class="stat-label">Objekte gesamt</div><div class="stat-val" id="s-total">25</div></div>
+<div class="stat"><div class="stat-label">Min. Verkehrswert</div><div class="stat-val" id="s-min">&mdash;</div></div>
+<div class="stat"><div class="stat-label">Max. Verkehrswert</div><div class="stat-val" id="s-max">&mdash;</div></div>
+<div class="stat"><div class="stat-label">Naechster Termin</div><div class="stat-val" id="s-next">&mdash;</div></div>
 </div>
-
 <div class="filters">
-  <label>Тип:</label>
-  <select id="f-type" onchange="render()">
-    <option value="">Все</option>
-    <option value="Wohnung">Wohnung</option>
-    <option value="Haus">Haus / Reihenhaus</option>
-    <option value="Gewerbe">Gewerbe</option>
-    <option value="Erbbaurecht">Erbbaurecht</option>
-    <option value="Lager">Lagerraum</option>
-  </select>
-  <label>Риск:</label>
-  <select id="f-risk" onchange="render()">
-    <option value="">Все</option>
-    <option value="low">Низкий</option>
-    <option value="med">Средний</option>
-    <option value="high">Высокий</option>
-  </select>
-  <label>Сортировка:</label>
-  <select id="f-sort" onchange="render()">
-    <option value="date">По дате</option>
-    <option value="asc">Цена ↑</option>
-    <option value="desc">Цена ↓</option>
-  </select>
-  <input type="text" id="f-search" placeholder="Поиск по адресу, р-ну…" oninput="render()" style="min-width:160px">
+<label>Typ:</label>
+<select id="f-type" onchange="render()"><option value="">Alle</option><option value="Wohnung">Wohnung</option><option value="Haus">Haus</option><option value="Gewerbe">Gewerbe</option><option value="Erbbaurecht">Erbbaurecht</option><option value="Lager">Lager</option></select>
+<label>Risiko:</label>
+<select id="f-risk" onchange="render()"><option value="">Alle</option><option value="low">Niedrig</option><option value="med">Mittel</option><option value="high">Hoch</option></select>
+<label>Sort:</label>
+<select id="f-sort" onchange="render()"><option value="date">Datum</option><option value="asc">Preis &uarr;</option><option value="desc">Preis &darr;</option></select>
+<input type="text" id="f-search" placeholder="Suche Adresse, Stadtteil..." oninput="render()" style="min-width:160px">
 </div>
-
 <div class="grid" id="grid"></div>
-<div class="no-results" id="no-results" style="display:none">Ничего не найдено</div>
-
+<div class="no-results" id="no-results" style="display:none">Keine Ergebnisse</div>
 <script>
-const DATA = [
-  {id:"374531",addr:"Kielsweg 10",bezirk:"Köln-Poll",type:"Haus",wfl:117,rooms:null,bj:1983,vw:587700,date:"2026-06-24",beschluss:true,gutachten:true,pros:["Grundstück 411 m²","Ruhige Lage Poll","1/3 MEA Wegefläche inkl."],cons:["Keine Innenbesichtigung","Fertighaus — Qualität unbekannt","Erschließung nur über Baulast"],risks:"Baulasteintragung; keine Innenkenntnis; Fertighaus-Bausubstanz",risk:"med",markt:"580–650 k€",discount:"marktkonform",liqui:"mittel",miete:"1.800–2.200 €/Mo",yld:"~4%",costs:"Renovierung 20–40k€",verdict:"Für Eigennutzer/Investor mit Renovierungsbereitschaft. Max. Gebot ca. <b>520–550k€</b>.",bid:"520–550 k€"},
-  {id:"374741",addr:"Winkelfeld 9",bezirk:"Köln-Rath/Heumar",type:"Erbbaurecht",wfl:123,rooms:5,bj:1960,vw:318000,date:"2026-06-17",beschluss:true,gutachten:false,pros:["Preis unter Marktniveau","Viel Wohnfläche 123 m²","Garage + DG Studio"],cons:["Nur Beschluss, kein Gutachten","Erbbaurecht — Zustimmung Eigentümer nötig","Baujahr 1960er"],risks:"Erbbaurecht-Veräußerung nur mit Zustimmung; kein Gutachten; Erbbauzinsen unbekannt",risk:"high",markt:"380–420 k€ (ohne Erbbaurecht)",discount:"deutlich unter Markt",liqui:"niedrig",miete:"1.200–1.400 €/Mo",yld:"~5% minus Erbbauzins",costs:"Sanierung 40–80k€",verdict:"Nur für erfahrene Käufer. Erbbaurecht kritisch prüfen. Max. Gebot <b>260–280k€</b>.",bid:"260–280 k€"},
-  {id:"374743",addr:"Hinweisblatt AG Köln",bezirk:"—",type:"Info",wfl:null,rooms:null,bj:null,vw:null,date:"2026-06-17",beschluss:true,gutachten:false,pros:["Verfahrenshinweise AG Köln"],cons:["Kein eigenständiges Objekt","Kein Verkehrswert"],risks:"—",risk:"low",markt:"—",discount:"—",liqui:"—",miete:"—",yld:"—",costs:"—",verdict:"Kein Kaufobjekt. Allgemeine Verfahrenshinweise.",bid:"—"},
-  {id:"374752",addr:"Luzerner Weg 19",bezirk:"Köln-Mülheim",type:"Haus",wfl:83,rooms:null,bj:1956,vw:430000,date:"2026-07-01",beschluss:true,gutachten:true,pros:["Grundstück 586 m²","REH mit Garage","Modernisierungen erkennbar"],cons:["Keine Innenbesichtigung","Baujahr 1956","Verwildertes Grundstück"],risks:"Keine Innenkenntnis; ältere Bausubstanz; Sanierungskosten unbekannt",risk:"med",markt:"420–480 k€",discount:"marktkonform",liqui:"mittel",miete:"1.400–1.600 €/Mo",yld:"~4.5%",costs:"Sanierung 30–60k€",verdict:"Solides REH in Mülheim, ohne Innencheck riskant. Max. Gebot <b>380–400k€</b>.",bid:"380–400 k€"},
-  {id:"374911",addr:"Höxterstraße 13",bezirk:"Köln-Brück",type:"Haus",wfl:199,rooms:null,bj:1958,vw:600000,date:"2026-07-07",beschluss:true,gutachten:true,pros:["Große Wohnfläche 199 m²","Grundstück 776 m²","Doppelhaushälfte + Garage"],cons:["Starker Sanierungsstau","Erweiterungen ohne Baugenehmigung","Kein Innencheck"],risks:"Baurechtsrisiko ungenehmigter Erweiterungen; starker Instandhaltungsstau",risk:"high",markt:"680–750 k€ (saniert)",discount:"~15–20% unter Markt",liqui:"mittel",miete:"2.200–2.600 €/Mo",yld:"~4%",costs:"Sanierung 80–150k€",verdict:"Für erfahrene Sanierer. Baurecht prüfen. Max. Gebot <b>520–550k€</b>.",bid:"520–550 k€"},
-  {id:"374949",addr:"Im Hasengarten 36",bezirk:"Köln-Hahnwald",type:"Haus",wfl:251,rooms:null,bj:1963,vw:4310000,date:"2026-07-15",beschluss:true,gutachten:true,pros:["Premiumlage Hahnwald","Riesiges Grundstück 3.021 m²","Neubau möglich"],cons:["Gebäude abbruchreif","Abrisskosten 100–200k€","Gesamtinvestition > 5 Mio €"],risks:"Komplettsanierung unmöglich; Abriss + Neubau; sehr langer Zeithorizont",risk:"high",markt:"4.5–5.5 Mio €",discount:"marktkonform als Bauland",liqui:"niedrig",miete:"8.000+ €/Mo nach Neubau",yld:"~3.5%",costs:"Abriss + Neubau 1.5–2.5 Mio €",verdict:"Nur für Developer/UHNW. Hahnwald = Toplage Kölns. Max. Gebot <b>3.8–4.0 Mio €</b>.",bid:"3,8–4,0 Mio €"},
-  {id:"375242",addr:"Hans-Katzer-Str. 34",bezirk:"Köln-Junkersdorf",type:"Haus",wfl:146,rooms:null,bj:2002,vw:790000,date:"2026-07-01",beschluss:true,gutachten:true,pros:["Baujahr 2002 — junges Haus","Junkersdorf: Top-Lage West","2 PKW-Stellplätze"],cons:["Keine Innenbesichtigung","Grundstück nur 299 m²","Preis hoch, Rendite gering"],risks:"Keine Innenkenntnis; niedriger Rendite-Hebel",risk:"low",markt:"820–900 k€",discount:"~5% unter Markt",liqui:"hoch",miete:"2.400–2.800 €/Mo",yld:"~3.8%",costs:"Ggf. Renovierung 10–20k€",verdict:"Top-Lage, geringes Risiko. Eher Eigennutzer. Max. Gebot <b>750–770k€</b>.",bid:"750–770 k€"},
-  {id:"375310",addr:"Ernst-Mühlendyck-Str. 1",bezirk:"Köln-Porz",type:"Wohnung",wfl:29,rooms:1,bj:1995,vw:114000,date:"2026-06-15",beschluss:true,gutachten:true,pros:["Niedrigster Einstiegspreis","TG-Stellplatz inklusive","Baujahr 1995"],cons:["Sehr klein: 29 m²","Keine Innenbesichtigung","Porz: eingeschränkte Nachfrage"],risks:"Zustand unbekannt; hoher Hausgeld-Anteil bei kleiner WE möglich",risk:"med",markt:"110–130 k€",discount:"marktkonform",liqui:"mittel",miete:"450–550 €/Mo",yld:"~5.5%",costs:"Ggf. Renovierung 5–10k€",verdict:"Kleinstwohnung mit TG-Platz. Für Mikroinvestor. Max. Gebot <b>100–105k€</b>.",bid:"100–105 k€"},
-  {id:"375530",addr:"Krüthstraße 7",bezirk:"Köln-Nippes",type:"Wohnung",wfl:148,rooms:5,bj:1925,vw:590000,date:"2026-07-15",beschluss:true,gutachten:true,pros:["Nippes: sehr gefragte Lage","5 Zimmer + 2 Balkone + 2 Keller","PV-Anlage vorhanden"],cons:["Baujahr 1925","Aufhebung Gemeinschaft","PV noch nicht angeschlossen"],risks:"Altbau 1925 — versteckte Mängel; WEG-Rücklage prüfen",risk:"med",markt:"600–680 k€",discount:"~5% unter Markt",liqui:"hoch",miete:"2.000–2.400 €/Mo",yld:"~4.5%",costs:"PV-Anschluss + Renovierung 10–20k€",verdict:"Attraktive große Wohnung Nippes. Eigennutzer top. Max. Gebot <b>560–580k€</b>.",bid:"560–580 k€"},
-  {id:"375579",addr:"Grüner Weg 11",bezirk:"Köln-50767",type:"Wohnung",wfl:null,rooms:null,bj:null,vw:530000,date:"2026-?",beschluss:false,gutachten:true,pros:["Vollständiges Gutachten","Lastenfreier Wert klar 530k€"],cons:["Kein Beschluss — kein Termin bekannt","50767 = schwächere Lage"],risks:"Termin unbekannt; Lage beeinflusst Weiterverkauf",risk:"med",markt:"480–560 k€",discount:"marktkonform",liqui:"mittel",miete:"1.500–1.800 €/Mo",yld:"~4%",costs:"Unbekannt",verdict:"Interessant, aber noch kein Termin. Gutachten einsehen. Max. Gebot <b>~480k€</b>.",bid:"~480 k€"},
-  {id:"375787",addr:"Dreifelder Weg 20",bezirk:"Köln-Lindweiler",type:"Haus",wfl:103,rooms:3,bj:1973,vw:300000,date:"2026-06-29",beschluss:true,gutachten:true,pros:["Niedrige Eintrittsschwelle","Garage inklusive","Vollunterkellert"],cons:["Baujahr 1973","Keine Innenbesichtigung","Lindweiler: periphere Lage"],risks:"Keine Innenkenntnis; Baujahr 1973; Sanierungskosten möglich",risk:"med",markt:"300–340 k€",discount:"marktkonform",liqui:"mittel",miete:"1.200–1.400 €/Mo",yld:"~5%",costs:"Modernisierung 20–40k€",verdict:"Günstigstes REH im Portfolio. Berufseinsteiger/Investor. Max. Gebot <b>270–285k€</b>.",bid:"270–285 k€"},
-  {id:"375821",addr:"Graseggerstr. 139",bezirk:"Köln-Longerich",type:"Gewerbe",wfl:249,rooms:9,bj:1956,vw:640000,date:"2026-08-25",beschluss:true,gutachten:true,pros:["9 Wohneinheiten + Ladenlokal","5/10+7/10 Grenzen weggefallen!","Eckgebäude"],cons:["Baujahr 1956","1 Wohnung ohne Baugenehmigung","Mäßiger Zustand"],risks:"Wohnung ohne Baugenehmigung; Instandsetzungsbedarf; Mieter-Risiko",risk:"high",markt:"620–700 k€",discount:"marktkonform",liqui:"mittel",miete:"3.500–4.500 €/Mo gesamt",yld:"~6.5% brutto",costs:"Instandsetzung 50–100k€",verdict:"MFH-Investor. Ohne Wertgrenzen — Gebot ab 320k€ möglich. Max. sinnvoll <b>560–580k€</b>.",bid:"560–580 k€"},
-  {id:"376147",addr:"Diepeschrather Str. 29",bezirk:"Köln-Dellbrück",type:"Wohnung",wfl:87,rooms:4,bj:1950,vw:410000,date:"2026-09-08",beschluss:true,gutachten:true,pros:["Kernsaniert 2010–2012","4 Zimmer + Balkon + Garten","44 m² Keller"],cons:["Instandhaltungsstau Sondereigentum","EG-Lage","Baujahr 1950"],risks:"Instandhaltungsstau; WEG-Rücklage unbekannt",risk:"med",markt:"420–460 k€",discount:"~5% unter Markt",liqui:"mittel",miete:"1.400–1.600 €/Mo",yld:"~4.5%",costs:"Renovierung SE 15–30k€",verdict:"Solide Wohnung, Garten attraktiv. Max. Gebot <b>375–390k€</b>.",bid:"375–390 k€"},
-  {id:"376242",addr:"Unterer Herbstweg 14",bezirk:"Köln-Merkenich",type:"Gewerbe",wfl:null,rooms:null,bj:null,vw:249000,date:"2026-07-13",beschluss:true,gutachten:true,pros:["Gewerbegrundstück 1.223 m²","Zubehör inklusive"],cons:["Keine Baugenehmigung","Landwirtschaftsfläche","Randlage"],risks:"Keine Baugenehmigung für Gebäude; Nutzungsänderung unsicher",risk:"high",markt:"200–260 k€",discount:"marktkonform",liqui:"niedrig",miete:"unklar ohne Baurecht",yld:"unklar",costs:"Baugenehmigung + ggf. Rückbau",verdict:"Nur für Gewerbetreibende mit Nutzungskonzept. Max. Gebot <b>200–220k€</b>.",bid:"200–220 k€"},
-  {id:"376324",addr:"Aloeweg 91",bezirk:"Köln-Merheim",type:"Haus",wfl:122,rooms:null,bj:2013,vw:568000,date:"2026-07-06",beschluss:true,gutachten:true,pros:["Baujahr 2013 — sehr jung","Fernwärme + 2 Stellplätze","Geringes technisches Risiko"],cons:["Wintergarten ohne Baugenehmigung","Grundstück nur 232 m²","8 Grundbuchpositionen"],risks:"Wintergarten-Genehmigung nachholen; komplexes Grundbuch",risk:"low",markt:"580–640 k€",discount:"~5% unter Markt",liqui:"hoch",miete:"1.800–2.100 €/Mo",yld:"~4%",costs:"Wintergarten-Genehmigung ~2–5k€",verdict:"Top-Objekt: junges Haus, gute Lage. Max. Gebot <b>530–545k€</b>.",bid:"530–545 k€"},
-  {id:"376458",addr:"Am Courts Garten 2",bezirk:"Köln-Zündorf",type:"Gewerbe",wfl:248,rooms:null,bj:1983,vw:758000,date:"2026-09-21",beschluss:true,gutachten:true,pros:["Vermietet — Sofortrendite","Guter Ausbau- und Unterhaltungszustand","Zündorf: ruhige Rheinlage"],cons:["TG-Stellplatz nur 2,30 m breit","Gewerbe = Leerstandsrisiko","2 Außenstellplätze eingeschränkt"],risks:"Mieter-Risiko Arztpraxis; Stellplatz-Nutzbarkeit eingeschränkt",risk:"med",markt:"700–800 k€",discount:"marktkonform",liqui:"niedrig",miete:"3.500–4.500 €/Mo",yld:"~5.5%",costs:"Gering aktuell",verdict:"Gewerblicher Investor, laufende Mieteinnahmen. Max. Gebot <b>700–720k€</b>.",bid:"700–720 k€"},
-  {id:"376623",addr:"Kleeweg 4",bezirk:"Köln-Wahn",type:"Haus",wfl:137,rooms:null,bj:1969,vw:760000,date:"2026-09-16",beschluss:true,gutachten:true,pros:["Freistehendes EFH","Grundstück 1.014 m²","Garage + Carport"],cons:["Baujahr 1969/70","Nähe Militärflughafen (Lärm)","Einstöckig"],risks:"Flughafennähe drückt Preise; Baujahr 1969 — Haustechnik veraltet",risk:"med",markt:"720–800 k€",discount:"marktkonform",liqui:"mittel",miete:"2.200–2.600 €/Mo",yld:"~3.8%",costs:"Modernisierung 30–50k€",verdict:"Viel Grundstück, gute Substanz. Flughafen prüfen. Max. Gebot <b>700–720k€</b>.",bid:"700–720 k€"},
-  {id:"376667",addr:"An der Schanz 2",bezirk:"Köln-Riehl",type:"Wohnung",wfl:62,rooms:2,bj:1970,vw:235000,date:"2026-08-05",beschluss:true,gutachten:true,pros:["AXA-Hochhaus denkmalgeschützt","Steuervorteile Denkmal","Rhein-/Stadtblick"],cons:["Modernisierungsrückstau","Veraltete Heizung + Fenster","Hausgeld bei 352 WE potenziell hoch"],risks:"Denkmalschutz schränkt Eigenmaßnahmen ein; Hausgeld unbekannt; Balkonsanierung läuft",risk:"high",markt:"240–270 k€",discount:"~5% unter Markt",liqui:"mittel",miete:"900–1.100 €/Mo",yld:"~5% brutto",costs:"Modernisierung 15–25k€ + lfd. Hausgeld",verdict:"Liebhaberobjekt. Hausgeld unbedingt prüfen. Max. Gebot <b>210–220k€</b>.",bid:"210–220 k€"},
-  {id:"376704",addr:"Hermesgasse 110/110a",bezirk:"Köln-Niehl",type:"Haus",wfl:115,rooms:null,bj:1850,vw:355000,date:"2026-07-29",beschluss:true,gutachten:true,pros:["Zwei Wohnungen flex Nutzung","Dachterrasse in 110a","Niehl: Entwicklungsgebiet"],cons:["Baujahr Mitte 19. Jh.","Nr. 110 ohne Bad","Massiver Modernisierungsbedarf"],risks:"Extrem alte Bausubstanz; Kernsanierung nötig; Niehl noch Aufwertungsgebiet",risk:"high",markt:"380–420 k€ (saniert)",discount:"deutlich unter Markt",liqui:"niedrig",miete:"1.400–1.800 €/Mo",yld:"~5%",costs:"Sanierung 100–180k€",verdict:"Für ambitionierte Sanierer. Kernsanierung unvermeidbar. Max. Gebot <b>300–320k€</b>.",bid:"300–320 k€"},
-  {id:"376720",addr:"Stolberger Str. 204b",bezirk:"Köln-Braunsfeld",type:"Wohnung",wfl:28,rooms:1,bj:null,vw:76000,date:"2026-08-18",beschluss:true,gutachten:true,pros:["Niedrigster Wohnungs-Verkehrswert","Braunsfeld: gute Lage"],cons:["Nur 28 m²","Keine Innenbesichtigung","Vermietet — Eigenbedarf ausgeschlossen"],risks:"Zustand unbekannt; Mieter-Risiko; Hausgeld unbekannt",risk:"med",markt:"80–95 k€",discount:"~10% unter Markt",liqui:"hoch",miete:"400–480 €/Mo",yld:"~6.5%",costs:"Ggf. Renovierung 3–8k€",verdict:"Mikroapartment Braunsfeld. Studenten/Pendler. Max. Gebot <b>68–72k€</b>.",bid:"68–72 k€"},
-  {id:"376764",addr:"Marzellenstr. 26",bezirk:"Köln-Altstadt Nord",type:"Gewerbe",wfl:null,rooms:null,bj:null,vw:770000,date:"2026-09-03",beschluss:true,gutachten:true,pros:["Altstadt Nord Premium","Nähe Hbf/Dom"],cons:["Kein Gutachten einsehbar","Keine Flächenangabe","Kein Innencheck"],risks:"Viele Unbekannte; Gewerbeimmobilie Altstadt volatil",risk:"high",markt:"750–900 k€",discount:"marktkonform",liqui:"niedrig",miete:"3.000–5.000 €/Mo",yld:"~5.5%",costs:"Unbekannt",verdict:"Nur auf Basis des Gutachtens vor Ort zu bewerten. Max. Gebot <b>680–700k€</b>.",bid:"680–700 k€"},
-  {id:"376786",addr:"Komödienstraße 5",bezirk:"Köln-Altstadt Nord",type:"Gewerbe",wfl:223,rooms:null,bj:1949,vw:1310000,date:"2026-09-30",beschluss:true,gutachten:false,pros:["Premiumlage Altstadt","Denkmalschutz-Steuervorteile","Ladenlokal + 3 Wohnungen"],cons:["Nur Beschluss, kein Gutachten","Altbaustandard 1949","Hoher Einstiegspreis"],risks:"Denkmalschutzauflagen; Leerstand Ladenlokal riskant; Altbausubstanz",risk:"med",markt:"1.2–1.5 Mio €",discount:"marktkonform",liqui:"mittel",miete:"5.800–7.000 €/Mo laut Gutachten",yld:"~5.3%",costs:"Modernisierung mit Denkmalauflagen",verdict:"Einzigartiges Objekt Toplage. Für institutionellen Investor. Max. Gebot <b>1,1–1,2 Mio €</b>.",bid:"1,1–1,2 Mio €"},
-  {id:"376794",addr:"Odenwaldstr. 49 (Nr. 17)",bezirk:"Köln-Humboldt/Gremberg",type:"Lager",wfl:4,rooms:null,bj:1950,vw:2700,date:"2026-09-22",beschluss:true,gutachten:true,pros:["Vermietet","Einstieg unter 3.000 €"],cons:["4 m² — kein Investment","Miete ~15 €/Mo","WEG-abhängig"],risks:"Minimal",risk:"low",markt:"2.500–3.500 €",discount:"marktkonform",liqui:"sehr niedrig",miete:"15–20 €/Mo",yld:"~7%",costs:"Minimal",verdict:"Kleinstobjekt. Kein Investment. Max. Gebot <b>2.400 €</b>.",bid:"2.400 €"},
-  {id:"376940",addr:"Grafenmühlenweg 170",bezirk:"Köln-Dellbrück",type:"Haus",wfl:143,rooms:null,bj:1924,vw:580000,date:"2026-09-16",beschluss:true,gutachten:true,pros:["Dellbrück: gute Wohnlage","Grundstück 976 m²","Garage + Stellplatz"],cons:["Baujahr 1924","Hoher Sanierungs-/Modernisierungsrückstau","Baumängel und -schäden"],risks:"Erheblicher Sanierungsbedarf; Baumängel; Aufhebung Gemeinschaft",risk:"high",markt:"620–700 k€ (saniert)",discount:"~15% unter Markt",liqui:"mittel",miete:"2.000–2.400 €/Mo nach Sanierung",yld:"~4.5%",costs:"Sanierung 100–200k€",verdict:"Für Sanierer mit Budget. Top-Grundstück Dellbrück. Max. Gebot <b>480–500k€</b>.",bid:"480–500 k€"},
-  {id:"376997",addr:"Komödienstr. 5 (Gutachten)",bezirk:"Köln-Altstadt Nord",type:"Gewerbe",wfl:223,rooms:null,bj:1949,vw:1310000,date:"2026-09-30",beschluss:false,gutachten:true,pros:["Vollständiges Gutachten zu 376786","Jahresrohertrag 84.732 €","Liegenschaftszins 3,25%"],cons:["Kein eigener Beschluss — gehört zu 376786"],risks:"Wie 376786",risk:"med",markt:"Wie 376786",discount:"Wie 376786",liqui:"Wie 376786",miete:"7.061 €/Mo (84.732 €/Jahr)",yld:"~5.3%",costs:"Wie 376786",verdict:"Gehört zu Objekt 376786. Separat nicht kaufbar.",bid:"—"},
-  {id:"377004",addr:"Merkenicher Str. 180",bezirk:"Köln-Niehl",type:"Haus",wfl:180,rooms:null,bj:1900,vw:680000,date:"2026-08-11",beschluss:true,gutachten:true,pros:["Großes Grundstück 1.050 m²","Scheune vorhanden","Niehl-Entwicklungsgebiet"],cons:["Hinterliegergrundstück — keine gesicherte Zuwegung","Baujahr vor 1900","Dringend sanierungsbedürftig"],risks:"Zuwegung NICHT rechtlich gesichert — kritisches Risiko; Baujahr vor 1900; Sanierung 150–250k€",risk:"high",markt:"650–750 k€ (mit gesicherter Zuwegung)",discount:"~15% Abschlag wegen Zuwegung",liqui:"niedrig",miete:"2.200–2.600 €/Mo nach Sanierung",yld:"~4%",costs:"Sanierung + Erschließung 200–300k€",verdict:"Zuwegung ist K.-o.-Kriterium. Max. Gebot <b>560–580k€</b> NUR wenn Zuwegung gesichert.",bid:"560–580 k€ (nur mit Zuwegung)"},
-  {id:"377024",addr:"Zorndorfstr. 3",bezirk:"Köln-Weidenpesch",type:"Wohnung",wfl:55,rooms:2,bj:1930,vw:160000,date:"2026-10-06",beschluss:true,gutachten:true,pros:["Günstige 2-Zi-Wohnung","Balkon + Kellerraum","Weidenpesch: zentrale Lage"],cons:["Keine Innenbesichtigung","Baujahr ~1930","Hausgeld unbekannt"],risks:"Keine Innenkenntnis; Altbau 1930; Hausgeld und Rücklage unbekannt",risk:"med",markt:"170–195 k€",discount:"~10% unter Markt",liqui:"hoch",miete:"700–850 €/Mo",yld:"~5.5%",costs:"Renovierung 8–15k€",verdict:"Günstiger Einstieg Weidenpesch. Kleinanleger. Max. Gebot <b>145–155k€</b>.",bid:"145–155 k€"}
+const DATA=[
+  {
+    "id": "375579",
+    "addr": "Grüner Weg 11, 50767 Köln",
+    "bezirk": "Esch",
+    "type": "Wohnung",
+    "wfl": 166.52,
+    "rooms": 7,
+    "bj": 1977,
+    "vw": 530000,
+    "date": "unbekannt",
+    "beschluss": false,
+    "gutachten": true,
+    "pros": [
+      "Großzügige Wohnfläche von 166,52 m²",
+      "Gute Lage in Köln-Esch",
+      "Gutachten vorhanden, Verkehrswert 530.000 €"
+    ],
+    "cons": [
+      "Kein Beschluss vorhanden",
+      "Modernisierungsrückstau an Heizungsanlage (ca. 10.000 €)",
+      "Baujahr ca. 1977, Restnutzungsdauer nur 32 Jahre"
+    ],
+    "risks": "Hauptrisiko: unklare Rechtslage mangels Beschluss, sowie Instandhaltungsstau und begrenzte Restnutzungsdauer.",
+    "risk": "med",
+    "markt": "530-570 kEUR",
+    "discount": "ca. 0-5% unter Markt",
+    "liqui": "mittel",
+    "miete": "2000-2500 EUR/Mo",
+    "yld": "~4.5%",
+    "costs": "10-30 kEUR",
+    "verdict": "Kaufempfehlung bei Gebot bis max. 500.000 €, da Verkehrswert 530.000 € und geringe Sanierungskosten. Vorsicht wegen fehlendem Beschluss.",
+    "bid": "480-500 kEUR",
+    "photos": [
+      "zvg_duss_koeln/md/photos/167519_img1.jpeg",
+      "zvg_duss_koeln/md/photos/167519_img10.jpeg",
+      "zvg_duss_koeln/md/photos/167519_img11.jpeg",
+      "zvg_duss_koeln/md/photos/167519_img12.jpeg",
+      "zvg_duss_koeln/md/photos/167519_img2.jpeg",
+      "zvg_duss_koeln/md/photos/167519_img3.jpeg",
+      "zvg_duss_koeln/md/photos/167519_img4.jpeg",
+      "zvg_duss_koeln/md/photos/167519_img5.jpeg",
+      "zvg_duss_koeln/md/photos/167519_img6.jpeg",
+      "zvg_duss_koeln/md/photos/167519_img7.jpeg",
+      "zvg_duss_koeln/md/photos/167519_img8.jpeg",
+      "zvg_duss_koeln/md/photos/167519_img9.jpeg"
+    ]
+  },
+  {
+    "id": "374531",
+    "addr": "Kielsweg 10, 51105 Köln (Poll)",
+    "bezirk": "Poll",
+    "type": "Haus",
+    "wfl": 117,
+    "rooms": null,
+    "bj": 1983,
+    "vw": 587700,
+    "date": "2026-06-24",
+    "beschluss": true,
+    "gutachten": true,
+    "pros": [
+      "Gute Lage in Köln-Poll mit guter Infrastruktur und Verkehrsanbindung",
+      "Verkehrswert von 587.700 EUR liegt unter dem ermittelten Marktwert von 600.000 EUR",
+      "Keine Altlasten oder wesentliche Immissionen festgestellt"
+    ],
+    "cons": [
+      "Keine Innenbesichtigung möglich, daher unbekannter Innenzustand",
+      "Anbaubaulast und Leitungsrechte belasten das Grundstück",
+      "Erschließungsbeiträge könnten noch anfallen (wenn auch unwahrscheinlich)"
+    ],
+    "risks": "Hauptrisiko ist der unbekannte Innenzustand (keine Besichtigung) sowie mögliche verdeckte Mängel bei einem Fertighaus von 1983.",
+    "risk": "med",
+    "markt": "550-650 kEUR",
+    "discount": "ca. 5-10% unter Markt",
+    "liqui": "mittel",
+    "miete": "1300-1500 EUR/Mo",
+    "yld": "ca. 2.7-3.1%",
+    "costs": "30-50 kEUR",
+    "verdict": "Kaufempfehlung für erfahrene Investoren, die mit unsanierten Objekten umgehen können. Maximales Gebot: 450.000 EUR, um ausreichend Puffer für Sanierung und Risiken zu haben.",
+    "bid": "420-450 kEUR",
+    "photos": [
+      "zvg_duss_koeln/md/photos/374531_img1.jpeg"
+    ]
+  },
+  {
+    "id": "374741",
+    "addr": "Winkelfeld 9, 51107 Köln (Rath/Heumar)",
+    "bezirk": "Rath/Heumar",
+    "type": "Haus",
+    "wfl": 123,
+    "rooms": 5,
+    "bj": 1960,
+    "vw": 318000,
+    "date": "2026-06-17",
+    "beschluss": true,
+    "gutachten": true,
+    "pros": [
+      "Reihenendhaus mit Garage in ruhiger Wohnlage",
+      "Gute Verkehrsanbindung (Autobahn, S-Bahn, Bus)",
+      "Keine Wohnungsbindung, keine Altlasten bekannt"
+    ],
+    "cons": [
+      "Erbbaurecht mit Zustimmungsvorbehalt des Grundstückseigentümers",
+      "Keine Innenbesichtigung möglich, daher unbekannter Innenzustand",
+      "Lärmbelastung durch Autobahn und Flughafen"
+    ],
+    "risks": "Erbbaurecht mit begrenzter Restlaufzeit (noch ca. 42 Jahre), unbekannter Innenzustand und mögliche Baumängel, Lärmimmissionen.",
+    "risk": "high",
+    "markt": "350-400 kEUR",
+    "discount": "~10-20% unter Markt",
+    "liqui": "mittel",
+    "miete": "1200-1500 EUR/Mo",
+    "yld": "~4.5%",
+    "costs": "30-60 kEUR",
+    "verdict": "Kauf nur bei Möglichkeit zur Innenbesichtigung und Klärung der Erbbaurechtsverlängerung empfehlenswert. Maximalgebot 280.000 EUR.",
+    "bid": "280-300 kEUR",
+    "photos": [
+      "zvg_duss_koeln/md/photos/374741_img1.jpeg",
+      "zvg_duss_koeln/md/photos/374741_img10.jpeg",
+      "zvg_duss_koeln/md/photos/374741_img11.jpeg",
+      "zvg_duss_koeln/md/photos/374741_img12.jpeg",
+      "zvg_duss_koeln/md/photos/374741_img13.jpeg",
+      "zvg_duss_koeln/md/photos/374741_img14.jpeg",
+      "zvg_duss_koeln/md/photos/374741_img15.jpeg",
+      "zvg_duss_koeln/md/photos/374741_img16.jpeg",
+      "zvg_duss_koeln/md/photos/374741_img17.jpeg",
+      "zvg_duss_koeln/md/photos/374741_img18.jpeg",
+      "zvg_duss_koeln/md/photos/374741_img19.jpeg",
+      "zvg_duss_koeln/md/photos/374741_img2.jpeg",
+      "zvg_duss_koeln/md/photos/374741_img20.jpeg",
+      "zvg_duss_koeln/md/photos/374741_img21.jpeg",
+      "zvg_duss_koeln/md/photos/374741_img22.jpeg",
+      "zvg_duss_koeln/md/photos/374741_img23.jpeg",
+      "zvg_duss_koeln/md/photos/374741_img3.jpeg",
+      "zvg_duss_koeln/md/photos/374741_img4.jpeg",
+      "zvg_duss_koeln/md/photos/374741_img5.jpeg",
+      "zvg_duss_koeln/md/photos/374741_img6.jpeg",
+      "zvg_duss_koeln/md/photos/374741_img7.jpeg",
+      "zvg_duss_koeln/md/photos/374741_img8.jpeg",
+      "zvg_duss_koeln/md/photos/374741_img9.jpeg"
+    ]
+  },
+  {
+    "id": "374752",
+    "addr": "Luzerner Weg 19, 51063 Köln-Mülheim",
+    "bezirk": "Mülheim",
+    "type": "Haus",
+    "wfl": 83,
+    "rooms": 5,
+    "bj": 1956,
+    "vw": 430000,
+    "date": "2026-07-01",
+    "beschluss": true,
+    "gutachten": true,
+    "pros": [
+      "Reihenendhaus mit Garage in Köln-Mülheim",
+      "Gute Lage mit Anbindung an Autobahn und Nahverkehr",
+      "Verkehrswert von 430.000 EUR liegt unter Sach- und Ertragswert"
+    ],
+    "cons": [
+      "Keine Innenbesichtigung möglich, Zustand ungewiss",
+      "Ungepflegtes, zugewachsenes Grundstück",
+      "Baujahr 1956, Modernisierungsstau wahrscheinlich"
+    ],
+    "risks": "Hauptrisiken: unbekannter Innenzustand, mögliche Altlasten, Gasfernleitungsrecht und andere Dienstbarkeiten.",
+    "risk": "med",
+    "markt": "350-400 kEUR",
+    "discount": "~10% unter Markt",
+    "liqui": "mittel",
+    "miete": "900-1100 EUR/Mo",
+    "yld": "~3.0%",
+    "costs": "30-60 kEUR",
+    "verdict": "Kaufempfehlung bei max. 300.000 EUR Gebot. Sanierungsbedarf und fehlende Innenbesichtigung rechtfertigen Abschlag. Bei niedrigem Gebot gute Chance auf Rendite.",
+    "bid": "280-300 kEUR",
+    "photos": [
+      "zvg_duss_koeln/md/photos/374752_img1.jpeg",
+      "zvg_duss_koeln/md/photos/374752_img10.jpeg",
+      "zvg_duss_koeln/md/photos/374752_img11.jpeg",
+      "zvg_duss_koeln/md/photos/374752_img12.jpeg",
+      "zvg_duss_koeln/md/photos/374752_img13.jpeg",
+      "zvg_duss_koeln/md/photos/374752_img14.jpeg",
+      "zvg_duss_koeln/md/photos/374752_img2.jpeg",
+      "zvg_duss_koeln/md/photos/374752_img3.png",
+      "zvg_duss_koeln/md/photos/374752_img4.png",
+      "zvg_duss_koeln/md/photos/374752_img5.png",
+      "zvg_duss_koeln/md/photos/374752_img6.jpeg",
+      "zvg_duss_koeln/md/photos/374752_img7.jpeg",
+      "zvg_duss_koeln/md/photos/374752_img8.jpeg",
+      "zvg_duss_koeln/md/photos/374752_img9.jpeg"
+    ]
+  },
+  {
+    "id": "374911",
+    "addr": "Höxterstraße 13, 51109 Köln",
+    "bezirk": "Brück",
+    "type": "Haus",
+    "wfl": 199,
+    "rooms": null,
+    "bj": 1958,
+    "vw": 600000,
+    "date": "2026-07-07",
+    "beschluss": true,
+    "gutachten": true,
+    "pros": [
+      "Gute Lage in Köln-Brück",
+      "Großzügige Wohnfläche von 199 m²",
+      "Großes Grundstück mit 776 m²"
+    ],
+    "cons": [
+      "Deutlicher Modernisierungs- und Instandhaltungsstau",
+      "Rückwärtiger Anbau ohne Baugenehmigung, 1. OG nicht genehmigungsfähig",
+      "Keine Bauakte vorhanden, rechtliche Unsicherheiten"
+    ],
+    "risks": "Risiken aus nicht genehmigtem Anbau, Instandhaltungsstau und unklarer Bausubstanz.",
+    "risk": "high",
+    "markt": "550-650 kEUR",
+    "discount": "ca. 5-10% unter Markt",
+    "liqui": "mittel",
+    "miete": "1300-1600 EUR/Mo",
+    "yld": "ca. 2.6-3.2%",
+    "costs": "50-100 kEUR",
+    "verdict": "Aufgrund des erheblichen Instandhaltungsstaus und der rechtlichen Risiken durch den nicht genehmigten Anbau ist nur ein reduziertes Gebot zu empfehlen. Maximales Gebot: 450.000 EUR.",
+    "bid": "400-450 kEUR",
+    "photos": [
+      "zvg_duss_koeln/md/photos/374911_img1.jpeg",
+      "zvg_duss_koeln/md/photos/374911_img2.jpeg",
+      "zvg_duss_koeln/md/photos/374911_img3.jpeg"
+    ]
+  },
+  {
+    "id": "374949",
+    "addr": "Im Hasengarten 36, 50996 Köln (Hahnwald)",
+    "bezirk": "Hahnwald",
+    "type": "Haus",
+    "wfl": 251,
+    "rooms": null,
+    "bj": 1963,
+    "vw": 4310000,
+    "date": "2026-07-15",
+    "beschluss": true,
+    "gutachten": true,
+    "pros": [
+      "Sehr gute Wohnlage in Köln-Hahnwald",
+      "Großes Grundstück (3.021 m²) mit Entwicklungspotenzial",
+      "Bodenwert von ca. 4,4 Mio. € bei abbruchreifem Haus"
+    ],
+    "cons": [
+      "Haus ist abbruchreif und wirtschaftlich nicht sanierungsfähig",
+      "Hohe Abbruchkosten (ca. 112.000 €)",
+      "Hochwasserrisiko (Überschwemmungstiefen bis 4 m)"
+    ],
+    "risks": "Hauptrisiken: Abbruchkosten, Hochwassergefahr, mögliche Altlasten im Boden, Lärm durch Autobahn und Industrie.",
+    "risk": "high",
+    "markt": "4,3-4,5 Mio. EUR",
+    "discount": "~0% unter Markt (Verkehrswert entspricht Bodenwert)",
+    "liqui": "niedrig",
+    "miete": "0 EUR/Mo (nicht vermietbar)",
+    "yld": "0%",
+    "costs": "112.000 EUR (Abbruch) + Neubaukosten",
+    "verdict": "Nur für Investoren mit Neubauabsicht geeignet. Maximales Gebot sollte den Verkehrswert von 4,31 Mio. € nicht überschreiten, da das Haus abgerissen werden muss.",
+    "bid": "4.100.000-4.310.000 EUR",
+    "photos": [
+      "zvg_duss_koeln/md/photos/374949_img1.jpeg",
+      "zvg_duss_koeln/md/photos/374949_img10.jpeg",
+      "zvg_duss_koeln/md/photos/374949_img2.jpeg",
+      "zvg_duss_koeln/md/photos/374949_img3.png",
+      "zvg_duss_koeln/md/photos/374949_img4.jpeg",
+      "zvg_duss_koeln/md/photos/374949_img5.jpeg",
+      "zvg_duss_koeln/md/photos/374949_img6.jpeg",
+      "zvg_duss_koeln/md/photos/374949_img7.jpeg",
+      "zvg_duss_koeln/md/photos/374949_img8.png",
+      "zvg_duss_koeln/md/photos/374949_img9.jpeg"
+    ]
+  },
+  {
+    "id": "375242",
+    "addr": "Hans-Katzer-Str. 34, 50858 Köln (Junkersdorf)",
+    "bezirk": "Junkersdorf",
+    "type": "Haus",
+    "wfl": 146,
+    "rooms": null,
+    "bj": 2002,
+    "vw": 790000,
+    "date": "2026-07-01",
+    "beschluss": true,
+    "gutachten": true,
+    "pros": [
+      "Gute Wohnlage in Köln-Junkersdorf mit hohem Freizeitwert (Stadtwald, Adenauerweiher)",
+      "Reihenendhaus mit 146 m² Wohnfläche und 2 Stellplätzen",
+      "Verkehrswert von 790.000 € liegt unter vergleichbaren Marktpreisen"
+    ],
+    "cons": [
+      "Keine Innenbesichtigung möglich, Zustand ungewiss",
+      "Altlastenverdacht (Altstandort) im Kataster eingetragen",
+      "Dienstbarkeiten (Leitungsrechte) belasten das Grundstück"
+    ],
+    "risks": "Hauptrisiken: fehlende Innenbesichtigung, mögliche Altlasten, unklare Sanierungskosten und eingeschränkte Finanzierungsmöglichkeiten.",
+    "risk": "med",
+    "markt": "850-950 kEUR",
+    "discount": "~10-15% unter Markt",
+    "liqui": "mittel",
+    "miete": "1700-2000 EUR/Mo",
+    "yld": "~2.6%",
+    "costs": "30-60 kEUR",
+    "verdict": "Kaufen bei Gebot bis max. 750.000 €, da Verkehrswert 790.000 € und Marktpreise höher. Risiko durch fehlende Innenbesichtigung und Altlasten begrenzen.",
+    "bid": "700-750 kEUR",
+    "photos": [
+      "zvg_duss_koeln/md/photos/375242_img1.jpeg",
+      "zvg_duss_koeln/md/photos/375242_img10.jpeg",
+      "zvg_duss_koeln/md/photos/375242_img11.jpeg",
+      "zvg_duss_koeln/md/photos/375242_img12.jpeg",
+      "zvg_duss_koeln/md/photos/375242_img13.jpeg",
+      "zvg_duss_koeln/md/photos/375242_img14.jpeg",
+      "zvg_duss_koeln/md/photos/375242_img15.jpeg",
+      "zvg_duss_koeln/md/photos/375242_img16.jpeg",
+      "zvg_duss_koeln/md/photos/375242_img17.jpeg",
+      "zvg_duss_koeln/md/photos/375242_img18.jpeg",
+      "zvg_duss_koeln/md/photos/375242_img19.jpeg",
+      "zvg_duss_koeln/md/photos/375242_img2.jpeg",
+      "zvg_duss_koeln/md/photos/375242_img20.jpeg",
+      "zvg_duss_koeln/md/photos/375242_img21.jpeg",
+      "zvg_duss_koeln/md/photos/375242_img22.jpeg",
+      "zvg_duss_koeln/md/photos/375242_img23.jpeg",
+      "zvg_duss_koeln/md/photos/375242_img24.jpeg",
+      "zvg_duss_koeln/md/photos/375242_img25.jpeg",
+      "zvg_duss_koeln/md/photos/375242_img3.jpeg",
+      "zvg_duss_koeln/md/photos/375242_img4.jpeg",
+      "zvg_duss_koeln/md/photos/375242_img5.jpeg",
+      "zvg_duss_koeln/md/photos/375242_img6.jpeg",
+      "zvg_duss_koeln/md/photos/375242_img7.jpeg",
+      "zvg_duss_koeln/md/photos/375242_img8.jpeg",
+      "zvg_duss_koeln/md/photos/375242_img9.jpeg"
+    ]
+  },
+  {
+    "id": "375310",
+    "addr": "Ernst-Mühlendyck-Straße 1, 51143 Köln (Porz)",
+    "bezirk": "Porz",
+    "type": "Wohnung",
+    "wfl": 29,
+    "rooms": null,
+    "bj": 1995,
+    "vw": 114000,
+    "date": "2026-06-15",
+    "beschluss": true,
+    "gutachten": true,
+    "pros": [
+      "Verkehrswert mit 114.000 € inkl. TG-Stellplatz günstig",
+      "Baujahr 1995, solide Bausubstanz",
+      "Lage in Köln-Porz mit guter Anbindung"
+    ],
+    "cons": [
+      "Keine Innenbesichtigung möglich, Zustand unbekannt",
+      "Nur 29 m² Wohnfläche, sehr kleine Wohnung",
+      "Eigengenutzt, keine Mietrendite aktuell"
+    ],
+    "risks": "Unbekannter Innenzustand, mögliche Sanierungsstau, keine Besichtigung möglich.",
+    "risk": "high",
+    "markt": "95-115 kEUR",
+    "discount": "ca. 0-5% unter Markt",
+    "liqui": "niedrig",
+    "miete": "348-400 EUR/Mo",
+    "yld": "ca. 4.4%",
+    "costs": "10-20 kEUR",
+    "verdict": "Kleines Objekt mit Risiko durch fehlende Innenbesichtigung. Maximalgebot 100.000 €, da Sanierungsrisiko und geringe Wohnfläche.",
+    "bid": "90-100 kEUR",
+    "photos": [
+      "zvg_duss_koeln/md/photos/375310_img1.jpeg",
+      "zvg_duss_koeln/md/photos/375310_img10.jpeg",
+      "zvg_duss_koeln/md/photos/375310_img11.jpeg",
+      "zvg_duss_koeln/md/photos/375310_img2.jpeg",
+      "zvg_duss_koeln/md/photos/375310_img3.jpeg",
+      "zvg_duss_koeln/md/photos/375310_img4.jpeg",
+      "zvg_duss_koeln/md/photos/375310_img5.jpeg",
+      "zvg_duss_koeln/md/photos/375310_img6.jpeg",
+      "zvg_duss_koeln/md/photos/375310_img7.jpeg",
+      "zvg_duss_koeln/md/photos/375310_img8.jpeg",
+      "zvg_duss_koeln/md/photos/375310_img9.jpeg"
+    ]
+  },
+  {
+    "id": "375530",
+    "addr": "Krüthstraße 7, 50733 Köln-Nippes",
+    "bezirk": "Nippes",
+    "type": "Wohnung",
+    "wfl": 148,
+    "rooms": 5,
+    "bj": 1925,
+    "vw": 590000,
+    "date": "2026-07-15",
+    "beschluss": true,
+    "gutachten": true,
+    "pros": [
+      "Großzügige Wohnfläche von 148 m² mit 5 Zimmern",
+      "Gute Lage in Köln-Nippes mit guter Infrastruktur und Verkehrsanbindung",
+      "Verkehrswert von 590.000 € im Vergleich zu Marktpreisen attraktiv"
+    ],
+    "cons": [
+      "Baujahr 1925 mit Renovierungsbedarf (Modernisierung 1970)",
+      "Teilungsversteigerung mit ungewisser Rechtslage (Eigenverwaltung)",
+      "Photovoltaik-Anlage noch nicht angeschlossen"
+    ],
+    "risks": "Hauptrisiken: Teilungsversteigerung mit möglichen Streitigkeiten, Renovierungsstau (Baujahr 1925, Modernisierung 1970), ungeklärte Sondernutzungsrechte und Eigenverwaltung der WEG.",
+    "risk": "med",
+    "markt": "590-650 kEUR",
+    "discount": "~10% unter Markt",
+    "liqui": "mittel",
+    "miete": "1800-2200 EUR/Mo",
+    "yld": "~4.0%",
+    "costs": "30-60 kEUR",
+    "verdict": "Kaufempfehlung für Investoren mit Renovierungsbereitschaft. Maximales Gebot: 300-320 kEUR, um ausreichend Rendite zu erzielen.",
+    "bid": "300-320 kEUR",
+    "photos": [
+      "zvg_duss_koeln/md/photos/375530_img1.jpeg",
+      "zvg_duss_koeln/md/photos/375530_img10.jpeg",
+      "zvg_duss_koeln/md/photos/375530_img11.jpeg",
+      "zvg_duss_koeln/md/photos/375530_img12.jpeg",
+      "zvg_duss_koeln/md/photos/375530_img13.jpeg",
+      "zvg_duss_koeln/md/photos/375530_img14.jpeg",
+      "zvg_duss_koeln/md/photos/375530_img15.jpeg",
+      "zvg_duss_koeln/md/photos/375530_img16.jpeg",
+      "zvg_duss_koeln/md/photos/375530_img17.jpeg",
+      "zvg_duss_koeln/md/photos/375530_img18.jpeg",
+      "zvg_duss_koeln/md/photos/375530_img19.jpeg",
+      "zvg_duss_koeln/md/photos/375530_img2.jpeg",
+      "zvg_duss_koeln/md/photos/375530_img3.jpeg",
+      "zvg_duss_koeln/md/photos/375530_img4.jpeg",
+      "zvg_duss_koeln/md/photos/375530_img5.jpeg",
+      "zvg_duss_koeln/md/photos/375530_img6.png",
+      "zvg_duss_koeln/md/photos/375530_img7.png",
+      "zvg_duss_koeln/md/photos/375530_img8.jpeg",
+      "zvg_duss_koeln/md/photos/375530_img9.jpeg"
+    ]
+  },
+  {
+    "id": "375787",
+    "addr": "Dreifelder Weg 20, 50767 Köln (Lindweiler)",
+    "bezirk": "Lindweiler",
+    "type": "Haus",
+    "wfl": 103.32,
+    "rooms": 4,
+    "bj": 1973,
+    "vw": 300000,
+    "date": "2026-06-29",
+    "beschluss": true,
+    "gutachten": true,
+    "pros": [
+      "Einfamilien-Reihenendhaus mit Garage",
+      "Gute Grundrissaufteilung (4 Zimmer, Keller, Terrasse)",
+      "Verkehrswert mit 300.000 EUR moderat"
+    ],
+    "cons": [
+      "Keine Innenbesichtigung möglich",
+      "Baujahr 1973, Sanierungsstau wahrscheinlich",
+      "Lage in Lindweiler, kein Top-Stadtteil"
+    ],
+    "risks": "Unbekannter Zustand innen, mögliche Altlasten (Asbest, Heizung), keine Besichtigung.",
+    "risk": "high",
+    "markt": "350-400 kEUR",
+    "discount": "~10-15% unter Markt",
+    "liqui": "mittel",
+    "miete": "1200-1500 EUR/Mo",
+    "yld": "~4.5%",
+    "costs": "50-80 kEUR",
+    "verdict": "Kauf nur mit Abschlag wegen fehlender Besichtigung. Maximalgebot 280.000 EUR, da Sanierungskosten und Risiko.",
+    "bid": "280-300 kEUR",
+    "photos": [
+      "zvg_duss_koeln/md/photos/375787_img1.jpx",
+      "zvg_duss_koeln/md/photos/375787_img2.jpx",
+      "zvg_duss_koeln/md/photos/375787_img3.jpx"
+    ]
+  },
+  {
+    "id": "375821",
+    "addr": "Graseggerstr. 139 / Wilhelm-Sollmann-Str. 105, 50737 Köln",
+    "bezirk": "Longerich",
+    "type": "Haus",
+    "wfl": 162,
+    "rooms": 9,
+    "bj": 1957,
+    "vw": 640000,
+    "date": "2026-08-25",
+    "beschluss": true,
+    "gutachten": true,
+    "pros": [
+      "Gute Lage in Köln-Longerich mit Nahversorgung und Verkehrsanbindung",
+      "Gemischte Nutzung (Wohnen und Gewerbe) mit Mieteinnahmen",
+      "Verkehrswert bereits reduziert, 5/10- und 7/10-Grenzen entfallen"
+    ],
+    "cons": [
+      "Teilweise nicht besichtigte Räume, unsichere Wohnflächenangaben",
+      "Instandsetzungsstau, insbesondere Feuchtigkeitsschäden",
+      "Illegale Wohnnutzung im Garagengebäude und teilweise ohne Baugenehmigung"
+    ],
+    "risks": "Hauptrisiken sind die ungeklärte Bausubstanz in nicht besichtigten Bereichen, mögliche Altlasten und die fehlende Baugenehmigung für Teile des Gebäudes.",
+    "risk": "high",
+    "markt": "640-700 kEUR",
+    "discount": "~10% unter Markt",
+    "liqui": "niedrig",
+    "miete": "2900-3500 EUR/Mo",
+    "yld": "~5.5%",
+    "costs": "100-200 kEUR",
+    "verdict": "Aufgrund der hohen Risiken (nicht besichtigte Flächen, illegale Bauten, Instandhaltungsstau) ist das Objekt nur für erfahrene Investoren mit Risikobereitschaft geeignet. Maximales Gebot sollte bei 450.000 EUR liegen, um ausreichend Sicherheitsmarge für Sanierungen zu haben.",
+    "bid": "400-450 kEUR",
+    "photos": [
+      "zvg_duss_koeln/md/photos/375821_img1.jpeg",
+      "zvg_duss_koeln/md/photos/375821_img10.jpeg",
+      "zvg_duss_koeln/md/photos/375821_img11.jpeg",
+      "zvg_duss_koeln/md/photos/375821_img12.jpeg",
+      "zvg_duss_koeln/md/photos/375821_img13.jpeg",
+      "zvg_duss_koeln/md/photos/375821_img14.jpeg",
+      "zvg_duss_koeln/md/photos/375821_img15.jpeg",
+      "zvg_duss_koeln/md/photos/375821_img16.jpeg",
+      "zvg_duss_koeln/md/photos/375821_img17.jpeg",
+      "zvg_duss_koeln/md/photos/375821_img18.jpeg",
+      "zvg_duss_koeln/md/photos/375821_img19.jpeg",
+      "zvg_duss_koeln/md/photos/375821_img2.jpeg",
+      "zvg_duss_koeln/md/photos/375821_img20.jpeg",
+      "zvg_duss_koeln/md/photos/375821_img21.jpeg",
+      "zvg_duss_koeln/md/photos/375821_img22.jpeg",
+      "zvg_duss_koeln/md/photos/375821_img23.jpeg",
+      "zvg_duss_koeln/md/photos/375821_img24.jpeg",
+      "zvg_duss_koeln/md/photos/375821_img25.jpeg",
+      "zvg_duss_koeln/md/photos/375821_img3.jpeg",
+      "zvg_duss_koeln/md/photos/375821_img4.jpeg",
+      "zvg_duss_koeln/md/photos/375821_img5.jpeg",
+      "zvg_duss_koeln/md/photos/375821_img6.png",
+      "zvg_duss_koeln/md/photos/375821_img7.png",
+      "zvg_duss_koeln/md/photos/375821_img8.png",
+      "zvg_duss_koeln/md/photos/375821_img9.png"
+    ]
+  },
+  {
+    "id": "376147",
+    "addr": "Diepeschrather Str. 29, 51069 Köln",
+    "bezirk": "Dellbrück",
+    "type": "Wohnung",
+    "wfl": 87,
+    "rooms": 4,
+    "bj": 1950,
+    "vw": 410000,
+    "date": "2026-09-08",
+    "beschluss": true,
+    "gutachten": true,
+    "pros": [
+      "Umfassend modernisiert/kernsaniert 2010-2012",
+      "Sondernutzungsrecht an Gartenfläche",
+      "Gute Lage in Köln-Dellbrück mit guter Infrastruktur"
+    ],
+    "cons": [
+      "Instandhaltungsstau im Sondereigentum",
+      "Wohnungsbindung nach NRW-Fördergesetz",
+      "Eigengenutzt, keine Mietverträge vorhanden"
+    ],
+    "risks": "Instandhaltungsstau, Wohnungsbindung, mögliche Bieterkonkurrenz durch Lage.",
+    "risk": "med",
+    "markt": "350-400 kEUR",
+    "discount": "~10% unter Markt",
+    "liqui": "mittel",
+    "miete": "1100-1300 EUR/Mo",
+    "yld": "~4.0%",
+    "costs": "20-40 kEUR",
+    "verdict": "Kaufen bei max. 350.000 EUR. Gute Lage, aber Instandhaltungsstau und Wohnungsbindung mindern Wert. Maximalgebot 350.000 EUR.",
+    "bid": "320-350 kEUR",
+    "photos": [
+      "zvg_duss_koeln/md/photos/376147_img1.jpeg",
+      "zvg_duss_koeln/md/photos/376147_img10.jpeg",
+      "zvg_duss_koeln/md/photos/376147_img11.jpeg",
+      "zvg_duss_koeln/md/photos/376147_img12.jpeg",
+      "zvg_duss_koeln/md/photos/376147_img13.jpeg",
+      "zvg_duss_koeln/md/photos/376147_img14.jpeg",
+      "zvg_duss_koeln/md/photos/376147_img15.jpeg",
+      "zvg_duss_koeln/md/photos/376147_img16.jpeg",
+      "zvg_duss_koeln/md/photos/376147_img2.png",
+      "zvg_duss_koeln/md/photos/376147_img3.jpeg",
+      "zvg_duss_koeln/md/photos/376147_img4.jpeg",
+      "zvg_duss_koeln/md/photos/376147_img5.jpeg",
+      "zvg_duss_koeln/md/photos/376147_img6.jpeg",
+      "zvg_duss_koeln/md/photos/376147_img7.jpeg",
+      "zvg_duss_koeln/md/photos/376147_img8.jpeg",
+      "zvg_duss_koeln/md/photos/376147_img9.jpeg"
+    ]
+  },
+  {
+    "id": "376242",
+    "addr": "Unterer Herbstweg 14, 50769 Köln-Merkenich",
+    "bezirk": "Merkenich",
+    "type": "Gewerbe",
+    "wfl": null,
+    "rooms": null,
+    "bj": null,
+    "vw": 249000,
+    "date": "2026-07-13",
+    "beschluss": true,
+    "gutachten": true,
+    "pros": [
+      "Gute Verkehrsanbindung an A1 und ÖPNV",
+      "Grundstück bereits aufgefüllt und eben",
+      "Keine Altlasten oder Bergbau bekannt"
+    ],
+    "cons": [
+      "Keine Baugenehmigung für bestehende Gebäude und Container",
+      "Bürogebäude außerhalb der Bebauungsplanfläche und auf Schutzstreifen",
+      "Hochwassergefahr (HQ10 bis HQ100) und fehlender Kanalanschluss"
+    ],
+    "risks": "Hauptrisiken: fehlende Baugenehmigung, Hochwassergefahr, keine Innenbesichtigung möglich, ungeklärte Nutzungssituation.",
+    "risk": "high",
+    "markt": "200-250 kEUR",
+    "discount": "ca. 0-10% über Verkehrswert",
+    "liqui": "niedrig",
+    "miete": "unbekannt",
+    "yld": "unbekannt",
+    "costs": "50-100 kEUR",
+    "verdict": "Aufgrund fehlender Baugenehmigungen, Hochwasserrisiko und unklarer Nutzung ist von einem Kauf abzuraten. Maximales Gebot sollte den Verkehrswert von 249.000 EUR nicht überschreiten.",
+    "bid": "200-220 kEUR",
+    "photos": [
+      "zvg_duss_koeln/md/photos/376242_img1.jpx"
+    ]
+  },
+  {
+    "id": "376324",
+    "addr": "Aloeweg 91, 51109 Köln",
+    "bezirk": "Merheim",
+    "type": "Haus",
+    "wfl": 122,
+    "rooms": 5,
+    "bj": 2013,
+    "vw": 568000,
+    "date": "2026-07-06",
+    "beschluss": true,
+    "gutachten": true,
+    "pros": [
+      "Relativ neues Baujahr 2013",
+      "Gepflegter Zustand, keine maßgeblichen Mängel",
+      "Gute Lage in Köln-Merheim"
+    ],
+    "cons": [
+      "Ungenehmigter Wintergartenanbau",
+      "Teilungsversteigerung mit mehreren Eigentümern",
+      "Nur 232 m² Grundstücksfläche"
+    ],
+    "risks": "Risiko aus Teilungsversteigerung und möglicherweise fehlender Baugenehmigung für Wintergarten.",
+    "risk": "med",
+    "markt": "550-600 kEUR",
+    "discount": "~5-10% unter Markt",
+    "liqui": "mittel",
+    "miete": "1400-1700 EUR/Mo",
+    "yld": "~3.0%",
+    "costs": "2-5 kEUR für Nachgenehmigung Wintergarten",
+    "verdict": "Kaufen bei max. 520 kEUR. Das Objekt ist in gutem Zustand, aber die Teilungsversteigerung und der ungenehmigte Anbau erfordern Vorsicht.",
+    "bid": "500-520 kEUR",
+    "photos": [
+      "zvg_duss_koeln/md/photos/376324_img1.jpeg",
+      "zvg_duss_koeln/md/photos/376324_img2.jpeg",
+      "zvg_duss_koeln/md/photos/376324_img3.jpeg",
+      "zvg_duss_koeln/md/photos/376324_img4.jpeg",
+      "zvg_duss_koeln/md/photos/376324_img5.jpx",
+      "zvg_duss_koeln/md/photos/376324_img6.jpeg"
+    ]
+  },
+  {
+    "id": "376458",
+    "addr": "Am Courts Garten 2, 51143 Köln-Zündorf",
+    "bezirk": "Zündorf",
+    "type": "Gewerbe",
+    "wfl": null,
+    "rooms": null,
+    "bj": 1983,
+    "vw": 758000,
+    "date": "2026-09-21",
+    "beschluss": true,
+    "gutachten": true,
+    "pros": [
+      "Guter Ausbau- und Unterhaltungszustand der Praxis",
+      "Vermietet, laufende Mieteinnahmen",
+      "Inklusive Stellplätze (2 außen, 1 TG)"
+    ],
+    "cons": [
+      "Gewerbeobjekt, keine Wohnnutzung",
+      "Zwei Außenstellplätze liegen im Hauseingangsvorbau und sind nicht nutzbar",
+      "TG-Stellplatz nur 2,30 m breit"
+    ],
+    "risks": "Hauptrisiko: eingeschränkte Nutzbarkeit der Außenstellplätze, mögliche Leerstandsrisiken bei Gewerbe.",
+    "risk": "med",
+    "markt": "740-780 kEUR",
+    "discount": "ca. 0-5% unter Markt",
+    "liqui": "mittel",
+    "miete": "3224-3224 EUR/Mo",
+    "yld": "~5.1%",
+    "costs": "0-10 kEUR",
+    "verdict": "Gewerbeobjekt mit stabilem Mieter, aber eingeschränkter Stellplatznutzung. Maximalgebot 720-740 kEUR.",
+    "bid": "720-740 kEUR",
+    "photos": [
+      "zvg_duss_koeln/md/photos/376458_img1.jpeg",
+      "zvg_duss_koeln/md/photos/376458_img10.jpeg",
+      "zvg_duss_koeln/md/photos/376458_img11.jpeg",
+      "zvg_duss_koeln/md/photos/376458_img12.jpeg",
+      "zvg_duss_koeln/md/photos/376458_img13.jpeg",
+      "zvg_duss_koeln/md/photos/376458_img14.jpeg",
+      "zvg_duss_koeln/md/photos/376458_img15.jpeg",
+      "zvg_duss_koeln/md/photos/376458_img16.jpeg",
+      "zvg_duss_koeln/md/photos/376458_img17.jpeg",
+      "zvg_duss_koeln/md/photos/376458_img18.jpeg",
+      "zvg_duss_koeln/md/photos/376458_img19.jpeg",
+      "zvg_duss_koeln/md/photos/376458_img2.jpeg",
+      "zvg_duss_koeln/md/photos/376458_img20.jpeg",
+      "zvg_duss_koeln/md/photos/376458_img21.jpeg",
+      "zvg_duss_koeln/md/photos/376458_img22.jpeg",
+      "zvg_duss_koeln/md/photos/376458_img23.jpeg",
+      "zvg_duss_koeln/md/photos/376458_img24.jpeg",
+      "zvg_duss_koeln/md/photos/376458_img25.jpeg",
+      "zvg_duss_koeln/md/photos/376458_img3.png",
+      "zvg_duss_koeln/md/photos/376458_img4.png",
+      "zvg_duss_koeln/md/photos/376458_img5.png",
+      "zvg_duss_koeln/md/photos/376458_img6.png",
+      "zvg_duss_koeln/md/photos/376458_img7.jpeg",
+      "zvg_duss_koeln/md/photos/376458_img8.jpeg",
+      "zvg_duss_koeln/md/photos/376458_img9.jpeg"
+    ]
+  },
+  {
+    "id": "376623",
+    "addr": "Kleeweg 4, 51147 Köln (Wahn)",
+    "bezirk": "Wahn",
+    "type": "Haus",
+    "wfl": 137,
+    "rooms": 5,
+    "bj": 1969,
+    "vw": 760000,
+    "date": "2026-09-16",
+    "beschluss": true,
+    "gutachten": true,
+    "pros": [
+      "Freistehendes Einfamilienhaus mit Garage und Carport auf großem Grundstück (1.014 m²)",
+      "Gute Verkehrsanbindung (A59, S-Bahn, Bus) und mittlere Wohnlage",
+      "Geringer Instandsetzungsbedarf, zufriedenstellender Unterhaltungszustand"
+    ],
+    "cons": [
+      "Lärmbelastung durch Schienen- und Flugverkehr (Einflugschneise Köln/Bonn)",
+      "Einfachverglasung und veraltete Fenster (Holz mit Einfachglas)",
+      "Ölheizung mit großem Tank (20.000 l) – potenzielle Altlasten und hohe Energiekosten"
+    ],
+    "risks": "Hauptrisiken: Flug- und Schienenlärm, mögliche Altlasten durch Öltank, veraltete Bausubstanz (Fenster, Heizung) und ungeklärte Eigentumsverhältnisse im Teilungsversteigerungsverfahren.",
+    "risk": "med",
+    "markt": "750-800 kEUR",
+    "discount": "ca. 5-10% unter Markt",
+    "liqui": "mittel",
+    "miete": "1500-1800 EUR/Mo",
+    "yld": "ca. 2.5-3.0%",
+    "costs": "50-100 kEUR",
+    "verdict": "Kaufempfehlung für Selbstnutzer oder langfristige Kapitalanleger, die Lärm tolerieren. Maximalgebot: 680-700 kEUR, um ausreichend Spielraum für Sanierungen zu haben.",
+    "bid": "680-700 kEUR",
+    "photos": [
+      "zvg_duss_koeln/md/photos/376623_img1.jpeg",
+      "zvg_duss_koeln/md/photos/376623_img10.jpeg",
+      "zvg_duss_koeln/md/photos/376623_img2.jpeg",
+      "zvg_duss_koeln/md/photos/376623_img3.jpeg",
+      "zvg_duss_koeln/md/photos/376623_img4.jpeg",
+      "zvg_duss_koeln/md/photos/376623_img5.jpeg",
+      "zvg_duss_koeln/md/photos/376623_img6.jpeg",
+      "zvg_duss_koeln/md/photos/376623_img7.jpeg",
+      "zvg_duss_koeln/md/photos/376623_img8.jpeg",
+      "zvg_duss_koeln/md/photos/376623_img9.jpeg"
+    ]
+  },
+  {
+    "id": "376667",
+    "addr": "An der Schanz 2, 50735 Köln (Riehl)",
+    "bezirk": "Riehl",
+    "type": "Wohnung",
+    "wfl": 62,
+    "rooms": 1,
+    "bj": 1970,
+    "vw": 235000,
+    "date": "2026-08-05",
+    "beschluss": true,
+    "gutachten": true,
+    "pros": [
+      "Rhein- und Dompanoramasicht aus dem 24. OG",
+      "Gute Verkehrsanbindung (U-Bahn, Bus, Autobahn)",
+      "Denkmalgeschütztes Hochhaus mit Schwimmbad, Sauna und Fitnessraum"
+    ],
+    "cons": [
+      "Nur 1 Zimmer (ca. 62 m²) – eher ein Appartement",
+      "Modernisierungsstau (Heizung, Fenster, Badfugen)",
+      "Hohe Lärmbelastung (Lden > 70 dB(A))"
+    ],
+    "risks": "Altlastenverdacht auf dem Grundstück (Nr. 50301) sowie Denkmalschutzauflagen und mögliche Sonderumlagen.",
+    "risk": "med",
+    "markt": "280-320 kEUR",
+    "discount": "~15-20% unter Markt",
+    "liqui": "mittel",
+    "miete": "775-930 EUR/Mo",
+    "yld": "~4.0%",
+    "costs": "15-30 kEUR",
+    "verdict": "Kaufempfehlung für renditeorientierte Anleger, die den Modernisierungsstau und die Lärmbelastung akzeptieren. Maximales Gebot: 200-210 kEUR.",
+    "bid": "200-210 kEUR",
+    "photos": [
+      "zvg_duss_koeln/md/photos/376667_img1.jpeg",
+      "zvg_duss_koeln/md/photos/376667_img2.jpeg",
+      "zvg_duss_koeln/md/photos/376667_img3.jpeg"
+    ]
+  },
+  {
+    "id": "376704",
+    "addr": "Hermesgasse 110, 110a, 50735 Köln-Niehl",
+    "bezirk": "Niehl",
+    "type": "Haus",
+    "wfl": 115,
+    "rooms": 6,
+    "bj": 1850,
+    "vw": 355000,
+    "date": "2026-07-29",
+    "beschluss": true,
+    "gutachten": true,
+    "pros": [
+      "Gute Wohnlage in Köln-Niehl",
+      "Zwei Wohneinheiten (50+65 m²) für Eigennutzung oder Vermietung",
+      "Verkehrswert von 355.000 € erscheint moderat"
+    ],
+    "cons": [
+      "Keine dinglich gesicherte Zuwegung (nur Notwegerecht)",
+      "Gebäude aus Mitte 19. Jh., sanierungsbedürftig",
+      "Wohnung 110 ohne Bad, Küche in 110a geteilt"
+    ],
+    "risks": "Hauptrisiko: ungesicherte Zuwegung über Nachbargrundstücke, hohes Alter und Sanierungsstau, mögliche Grenzüberbauung.",
+    "risk": "high",
+    "markt": "350-400 kEUR",
+    "discount": "~10% unter Markt",
+    "liqui": "mittel",
+    "miete": "1400-1700 EUR/Mo",
+    "yld": "~4.5%",
+    "costs": "50-80 kEUR",
+    "verdict": "Kauf nur bei Absicherung der Zuwegung und Bereitschaft zu hohen Sanierungskosten. Maximalgebot 280-300 kEUR.",
+    "bid": "280-300 kEUR",
+    "photos": [
+      "zvg_duss_koeln/md/photos/376704_img1.jpeg",
+      "zvg_duss_koeln/md/photos/376704_img2.jpeg",
+      "zvg_duss_koeln/md/photos/376704_img3.jpeg",
+      "zvg_duss_koeln/md/photos/376704_img4.jpeg",
+      "zvg_duss_koeln/md/photos/376704_img5.jpeg",
+      "zvg_duss_koeln/md/photos/376704_img6.jpeg",
+      "zvg_duss_koeln/md/photos/376704_img7.jpeg"
+    ]
+  },
+  {
+    "id": "376720",
+    "addr": "Scharffensteinstr. 102, 51061 Köln-Stammheim",
+    "bezirk": "Stammheim",
+    "type": "Haus",
+    "wfl": 94,
+    "rooms": 3,
+    "bj": 1910,
+    "vw": 305000,
+    "date": "2026-08-12",
+    "beschluss": true,
+    "gutachten": true,
+    "pros": [
+      "Zentrale Lage in Köln-Stammheim mit guter Anbindung",
+      "Drei Wohneinheiten für flexible Nutzung oder Vermietung",
+      "Leerstand ermöglicht sofortige Nutzung ohne Mieterkonflikte"
+    ],
+    "cons": [
+      "Baujahr 1910 mit teilweise veralteter Substanz",
+      "Fehlende Baugenehmigung für Anbau und Dachgeschossausbau",
+      "Instandsetzungsbedarf an Gastherme und Keller"
+    ],
+    "risks": "Hauptrisiken: fehlende Baugenehmigungen für Nutzungsänderungen, mögliche Altlasten im Boden, und ungewisse Sanierungskosten.",
+    "risk": "med",
+    "markt": "350-400 kEUR",
+    "discount": "~10-15% unter Markt",
+    "liqui": "mittel",
+    "miete": "1200-1500 EUR/Mo",
+    "yld": "~4.5%",
+    "costs": "30-60 kEUR",
+    "verdict": "Kaufen bei max. 280-300 kEUR. Gutes Verhältnis von Ertrag und Wert, aber Baugenehmigungsrisiko beachten.",
+    "bid": "280-300 kEUR",
+    "photos": [
+      "zvg_duss_koeln/md/photos/376720_img1.jpeg",
+      "zvg_duss_koeln/md/photos/376720_img10.jpeg",
+      "zvg_duss_koeln/md/photos/376720_img11.jpeg",
+      "zvg_duss_koeln/md/photos/376720_img12.jpeg",
+      "zvg_duss_koeln/md/photos/376720_img13.jpeg",
+      "zvg_duss_koeln/md/photos/376720_img14.jpeg",
+      "zvg_duss_koeln/md/photos/376720_img15.jpeg",
+      "zvg_duss_koeln/md/photos/376720_img16.jpeg",
+      "zvg_duss_koeln/md/photos/376720_img17.jpeg",
+      "zvg_duss_koeln/md/photos/376720_img18.jpeg",
+      "zvg_duss_koeln/md/photos/376720_img19.jpeg",
+      "zvg_duss_koeln/md/photos/376720_img2.jpeg",
+      "zvg_duss_koeln/md/photos/376720_img20.jpeg",
+      "zvg_duss_koeln/md/photos/376720_img21.jpeg",
+      "zvg_duss_koeln/md/photos/376720_img22.jpeg",
+      "zvg_duss_koeln/md/photos/376720_img23.jpeg",
+      "zvg_duss_koeln/md/photos/376720_img3.jpeg",
+      "zvg_duss_koeln/md/photos/376720_img4.jpeg",
+      "zvg_duss_koeln/md/photos/376720_img5.jpeg",
+      "zvg_duss_koeln/md/photos/376720_img6.jpeg",
+      "zvg_duss_koeln/md/photos/376720_img7.jpeg",
+      "zvg_duss_koeln/md/photos/376720_img8.jpeg",
+      "zvg_duss_koeln/md/photos/376720_img9.jpeg"
+    ]
+  },
+  {
+    "id": "376764",
+    "addr": "Odenwaldstr. 49, 51105 Köln",
+    "bezirk": "Humboldt-Gremberg",
+    "type": "Lager",
+    "wfl": null,
+    "rooms": null,
+    "bj": 1950,
+    "vw": 4700,
+    "date": "2026-09-22",
+    "beschluss": true,
+    "gutachten": true,
+    "pros": [
+      "Günstiger Einstiegspreis",
+      "Vermietet, sofortige Mieteinnahmen",
+      "Gute Lage in Köln mit Anbindung"
+    ],
+    "cons": [
+      "Sehr kleine Fläche (7 m²)",
+      "Nur als Lager nutzbar",
+      "Hohe Instandhaltungsrücklagen möglich"
+    ],
+    "risks": "Geringe Nachfrage nach reinen Lagerräumen, mögliche Leerstandsrisiken und versteckte Mängel am Altbau.",
+    "risk": "med",
+    "markt": "4.5-5.5 kEUR",
+    "discount": "ca. 10-15% unter Markt",
+    "liqui": "niedrig",
+    "miete": "35 EUR/Mo",
+    "yld": "~8.9%",
+    "costs": "0-2 kEUR",
+    "verdict": "Kauf nur für Eigennutzer oder als Beimischung zu einem Portfolio. Maximalgebot 4.500 EUR.",
+    "bid": "4.200-4.500 EUR",
+    "photos": [
+      "zvg_duss_koeln/md/photos/376764_img1.png",
+      "zvg_duss_koeln/md/photos/376764_img10.png",
+      "zvg_duss_koeln/md/photos/376764_img11.png",
+      "zvg_duss_koeln/md/photos/376764_img2.png",
+      "zvg_duss_koeln/md/photos/376764_img3.png",
+      "zvg_duss_koeln/md/photos/376764_img4.png",
+      "zvg_duss_koeln/md/photos/376764_img5.png",
+      "zvg_duss_koeln/md/photos/376764_img6.png",
+      "zvg_duss_koeln/md/photos/376764_img7.png",
+      "zvg_duss_koeln/md/photos/376764_img8.png",
+      "zvg_duss_koeln/md/photos/376764_img9.png"
+    ]
+  },
+  {
+    "id": "376786",
+    "addr": "Komödienstraße 5, 50667 Köln",
+    "bezirk": "Altstadt - Nord",
+    "type": "Haus",
+    "wfl": 223,
+    "rooms": null,
+    "bj": 1949,
+    "vw": 1310000,
+    "date": "2026-09-30",
+    "beschluss": true,
+    "gutachten": true,
+    "pros": [
+      "Zentrale Innenstadtlage nahe Dom und Hauptbahnhof",
+      "Denkmalgeschütztes Gebäude mit historischem Charme",
+      "Gute Ertragslage durch gemischte Nutzung (Wohnen und Gewerbe)"
+    ],
+    "cons": [
+      "Denkmalschutz bedingt erhöhte Instandhaltungskosten",
+      "Hoher Verkehrslärm (>75 dB(A) tagsüber)",
+      "Grundstück sehr klein (64 m²) und tiefe Bebauung"
+    ],
+    "risks": "Denkmalschutzauflagen, mögliche Altlasten trotz negativem Kataster, Lärmbelastung und eingeschränkte Erweiterungsmöglichkeiten.",
+    "risk": "med",
+    "markt": "1.250-1.400 kEUR",
+    "discount": "ca. 5-10% unter Markt",
+    "liqui": "mittel",
+    "miete": "7000-7500 EUR/Mo",
+    "yld": "~4.5%",
+    "costs": "50-100 kEUR (Denkmalschutz bedingt höhere Sanierungskosten)",
+    "verdict": "Attraktive Kapitalanlage in bester Innenstadtlage mit stabilem Ertrag. Maximales Gebot sollte 1.200.000 EUR nicht überschreiten, um ausreichende Rendite zu erzielen.",
+    "bid": "1.100-1.200 kEUR",
+    "photos": [
+      "zvg_duss_koeln/md/photos/376786_img1.jpeg",
+      "zvg_duss_koeln/md/photos/376786_img2.jpeg"
+    ]
+  },
+  {
+    "id": "376794",
+    "addr": "Odenwaldstr. 49, 51105 Köln",
+    "bezirk": "Humboldt/Gremberg",
+    "type": "Lager",
+    "wfl": null,
+    "rooms": null,
+    "bj": 1960,
+    "vw": 2700,
+    "date": "2026-09-22",
+    "beschluss": true,
+    "gutachten": true,
+    "pros": [
+      "Sehr niedriger Verkehrswert (2.700 €)",
+      "Vermietet, sofortige Mieteinnahmen",
+      "Gute Lage in Köln mit guter Anbindung"
+    ],
+    "cons": [
+      "Nur 4 m² Nutzfläche",
+      "Keine Innenbesichtigung des Objekts möglich",
+      "Altes Gebäude (Baujahr 1950er/60er, Umbau 2013)"
+    ],
+    "risks": "Geringe Nachfrage nach kleinen Lagerräumen, mögliche Leerstandsrisiken, keine Besichtigung von innen.",
+    "risk": "med",
+    "markt": "2.500-3.000 EUR",
+    "discount": "ca. 10% unter Markt",
+    "liqui": "niedrig",
+    "miete": "20 EUR/Monat (240 EUR/Jahr)",
+    "yld": "ca. 8.9%",
+    "costs": "0-500 EUR",
+    "verdict": "Kleiner Lagerraum mit geringem Investitionsvolumen. Geeignet für Eigennutzer oder als Anlageobjekt mit moderater Rendite. Maximalgebot: 2.700 EUR.",
+    "bid": "2.500-2.700 EUR",
+    "photos": [
+      "zvg_duss_koeln/md/photos/376794_img1.jpeg",
+      "zvg_duss_koeln/md/photos/376794_img10.jpeg",
+      "zvg_duss_koeln/md/photos/376794_img11.jpeg",
+      "zvg_duss_koeln/md/photos/376794_img2.jpeg",
+      "zvg_duss_koeln/md/photos/376794_img3.jpeg",
+      "zvg_duss_koeln/md/photos/376794_img4.jpeg",
+      "zvg_duss_koeln/md/photos/376794_img5.jpeg",
+      "zvg_duss_koeln/md/photos/376794_img6.png",
+      "zvg_duss_koeln/md/photos/376794_img7.png",
+      "zvg_duss_koeln/md/photos/376794_img8.jpeg",
+      "zvg_duss_koeln/md/photos/376794_img9.jpeg"
+    ]
+  },
+  {
+    "id": "376940",
+    "addr": "Grafmühlenweg 170, 51069 Köln (Dellbrück)",
+    "bezirk": "Dellbrück",
+    "type": "Haus",
+    "wfl": 143,
+    "rooms": null,
+    "bj": 1924,
+    "vw": 580000,
+    "date": "2026-09-16",
+    "beschluss": true,
+    "gutachten": true,
+    "pros": [
+      "Gute Lage in Köln-Dellbrück mit guter Infrastruktur",
+      "Großes Grundstück (976 m²) mit Garage und Stellplatz",
+      "Verkehrswert von 580.000 € liegt unter vergleichbaren Marktpreisen"
+    ],
+    "cons": [
+      "Erheblicher Instandhaltungs- und Modernisierungsstau",
+      "Aktueller Rohrbruch und Schimmelschaden, Heizung defekt",
+      "Keine Innenbesichtigung möglich, Zustand unsicher"
+    ],
+    "risks": "Hohes Risiko durch unbekannte Bauschäden, Schimmel, Heizungsausfall und möglichen Dachstuhlbefall; keine Innenbesichtigung.",
+    "risk": "high",
+    "markt": "580-650 kEUR",
+    "discount": "ca. 10-15% unter Markt",
+    "liqui": "mittel",
+    "miete": "1091-1300 EUR/Mo",
+    "yld": "ca. 2.3-2.7%",
+    "costs": "100-200 kEUR",
+    "verdict": "Aufgrund des hohen Sanierungsstaus und der unklaren Bauschäden ist das Objekt nur für erfahrene Sanierer mit Risikobereitschaft geeignet. Maximales Gebot sollte 450.000 € nicht überschreiten.",
+    "bid": "400-450 kEUR",
+    "photos": [
+      "zvg_duss_koeln/md/photos/376940_img1.jpeg",
+      "zvg_duss_koeln/md/photos/376940_img10.jpeg",
+      "zvg_duss_koeln/md/photos/376940_img11.png",
+      "zvg_duss_koeln/md/photos/376940_img12.jpeg",
+      "zvg_duss_koeln/md/photos/376940_img13.png",
+      "zvg_duss_koeln/md/photos/376940_img2.jpeg",
+      "zvg_duss_koeln/md/photos/376940_img3.jpeg",
+      "zvg_duss_koeln/md/photos/376940_img4.jpeg",
+      "zvg_duss_koeln/md/photos/376940_img5.jpeg",
+      "zvg_duss_koeln/md/photos/376940_img6.jpeg",
+      "zvg_duss_koeln/md/photos/376940_img7.png",
+      "zvg_duss_koeln/md/photos/376940_img8.jpeg",
+      "zvg_duss_koeln/md/photos/376940_img9.png"
+    ]
+  },
+  {
+    "id": "377004",
+    "addr": "Merkenicher Str. 180, 50735 Köln",
+    "bezirk": "Niehl",
+    "type": "Haus",
+    "wfl": 180,
+    "rooms": null,
+    "bj": 1900,
+    "vw": 680000,
+    "date": "2026-08-11",
+    "beschluss": true,
+    "gutachten": true,
+    "pros": [
+      "Großes Grundstück mit 1.050 m²",
+      "Gute Lage in Köln-Niehl",
+      "Potenzial für Wertsteigerung nach Sanierung"
+    ],
+    "cons": [
+      "Starker Sanierungsstau und Instandhaltungsrückstand",
+      "Keine gesicherte Zuwegung (Hinterliegergrundstück)",
+      "Hohes Baujahr (vor 1900) mit geringer Restnutzungsdauer"
+    ],
+    "risks": "Hauptrisiken sind die fehlende gesicherte Zuwegung, der erhebliche Sanierungsstau und die unsichere rechtliche Situation als Hinterliegergrundstück.",
+    "risk": "high",
+    "markt": "350-400 kEUR",
+    "discount": "~10% unter Markt",
+    "liqui": "niedrig",
+    "miete": "1200-1500 EUR/Mo",
+    "yld": "~4.5%",
+    "costs": "150-250 kEUR",
+    "verdict": "Aufgrund der fehlenden Zuwegung und des hohen Sanierungsstaus ist das Objekt nur für erfahrene Investoren mit Risikobereitschaft geeignet. Maximales Gebot sollte 300.000 EUR nicht überschreiten.",
+    "bid": "280-300 kEUR",
+    "photos": [
+      "zvg_duss_koeln/md/photos/377004_img1.jpeg",
+      "zvg_duss_koeln/md/photos/377004_img10.jpeg",
+      "zvg_duss_koeln/md/photos/377004_img2.jpeg",
+      "zvg_duss_koeln/md/photos/377004_img3.jpeg",
+      "zvg_duss_koeln/md/photos/377004_img4.jpeg",
+      "zvg_duss_koeln/md/photos/377004_img5.jpeg",
+      "zvg_duss_koeln/md/photos/377004_img6.jpeg",
+      "zvg_duss_koeln/md/photos/377004_img7.jpeg",
+      "zvg_duss_koeln/md/photos/377004_img8.jpx",
+      "zvg_duss_koeln/md/photos/377004_img9.jpeg"
+    ]
+  },
+  {
+    "id": "377024",
+    "addr": "Zorndorfstraße 3, 50737 Köln",
+    "bezirk": "Weidenpesch",
+    "type": "Wohnung",
+    "wfl": 55,
+    "rooms": 2,
+    "bj": 1930,
+    "vw": 160000,
+    "date": "2026-10-06",
+    "beschluss": true,
+    "gutachten": true,
+    "pros": [
+      "Gute Lage in Köln-Weidenpesch mit guter Anbindung an ÖPNV und Autobahn",
+      "Balkon und Kellerabstellraum vorhanden",
+      "Keine Wohnungsbindung, freie Nutzung möglich"
+    ],
+    "cons": [
+      "Keine Innenbesichtigung möglich, Zustand ungewiss",
+      "Baujahr um 1930, Modernisierungsbedarf wahrscheinlich",
+      "Leerstand, keine Mieteinnahmen aktuell"
+    ],
+    "risks": "Hauptrisiken: unbekannter Innenzustand, möglicherweise hoher Renovierungsstau, unklare Eigentümersituation.",
+    "risk": "high",
+    "markt": "300-350 kEUR",
+    "discount": "~50% unter Markt",
+    "liqui": "niedrig",
+    "miete": "700-900 EUR/Mo",
+    "yld": "~3.5%",
+    "costs": "50-100 kEUR",
+    "verdict": "Aufgrund des unbekannten Innenzustands und des Leerstands ist die Wohnung nur mit hohem Risiko zu empfehlen. Maximales Gebot sollte bei 120.000 EUR liegen, um Renovierungskosten und Risiken abzudecken.",
+    "bid": "100-120 kEUR",
+    "photos": [
+      "zvg_duss_koeln/md/photos/377024_img1.jpeg",
+      "zvg_duss_koeln/md/photos/377024_img10.jpeg",
+      "zvg_duss_koeln/md/photos/377024_img11.jpeg",
+      "zvg_duss_koeln/md/photos/377024_img12.jpeg",
+      "zvg_duss_koeln/md/photos/377024_img13.jpeg",
+      "zvg_duss_koeln/md/photos/377024_img14.jpeg",
+      "zvg_duss_koeln/md/photos/377024_img15.jpeg",
+      "zvg_duss_koeln/md/photos/377024_img16.jpeg",
+      "zvg_duss_koeln/md/photos/377024_img17.jpeg",
+      "zvg_duss_koeln/md/photos/377024_img18.jpeg",
+      "zvg_duss_koeln/md/photos/377024_img19.jpeg",
+      "zvg_duss_koeln/md/photos/377024_img2.jpeg",
+      "zvg_duss_koeln/md/photos/377024_img20.jpeg",
+      "zvg_duss_koeln/md/photos/377024_img21.jpeg",
+      "zvg_duss_koeln/md/photos/377024_img22.jpeg",
+      "zvg_duss_koeln/md/photos/377024_img23.jpeg",
+      "zvg_duss_koeln/md/photos/377024_img24.jpeg",
+      "zvg_duss_koeln/md/photos/377024_img25.jpeg",
+      "zvg_duss_koeln/md/photos/377024_img3.jpeg",
+      "zvg_duss_koeln/md/photos/377024_img4.jpeg",
+      "zvg_duss_koeln/md/photos/377024_img5.jpeg",
+      "zvg_duss_koeln/md/photos/377024_img6.jpeg",
+      "zvg_duss_koeln/md/photos/377024_img7.jpeg",
+      "zvg_duss_koeln/md/photos/377024_img8.jpeg",
+      "zvg_duss_koeln/md/photos/377024_img9.jpeg"
+    ]
+  }
 ];
-
-const typeColor={
-  "Wohnung":"background:#e6f1fb;color:#185fa5",
-  "Haus":"background:#eaf3de;color:#3b6d11",
-  "Gewerbe":"background:#faeeda;color:#854f0b",
-  "Erbbaurecht":"background:#fbeaf0;color:#993556",
-  "Lager":"background:#f1efe8;color:#5f5e5a",
-  "Info":"background:#f1efe8;color:#5f5e5a"
-};
-const riskLabel={"low":"Низкий риск","med":"Средний риск","high":"Высокий риск"};
-
-function fmtPrice(v){
-  if(!v) return "—";
-  if(v>=1000000) return (v/1000000).toFixed(2).replace(/\.?0+$/,"")+" Mio €";
-  return (v/1000).toFixed(0)+" k€";
-}
-
+const typeColor={"Wohnung":"background:#e6f1fb;color:#185fa5","Haus":"background:#eaf3de;color:#3b6d11","Gewerbe":"background:#faeeda;color:#854f0b","Erbbaurecht":"background:#fbeaf0;color:#993556","Lager":"background:#f1efe8;color:#5f5e5a","Garage":"background:#f1efe8;color:#5f5e5a","Stellplatz":"background:#f1efe8;color:#5f5e5a","Sonstiges":"background:#f1efe8;color:#5f5e5a"};
+const riskLabel={"low":"Niedriges Risiko","med":"Mittleres Risiko","high":"Hohes Risiko"};
+function fmtPrice(v){if(!v)return"—";if(v>=1e6)return(v/1e6).toFixed(2).replace(/\.?0+$/,"")+" Mio EUR";return(v/1e3).toFixed(0)+" kEUR"}
 function render(){
-  const typeF=document.getElementById("f-type").value;
-  const riskF=document.getElementById("f-risk").value;
-  const sortF=document.getElementById("f-sort").value;
-  const search=document.getElementById("f-search").value.toLowerCase();
-  let data=[...DATA];
-  if(typeF) data=data.filter(d=>d.type===typeF);
-  if(riskF) data=data.filter(d=>d.risk===riskF);
-  if(search) data=data.filter(d=>(d.addr+d.bezirk).toLowerCase().includes(search));
-  if(sortF==="asc") data.sort((a,b)=>(a.vw||0)-(b.vw||0));
-  else if(sortF==="desc") data.sort((a,b)=>(b.vw||0)-(a.vw||0));
-  else data.sort((a,b)=>a.date.localeCompare(b.date));
-  document.getElementById("s-total").textContent=data.length;
-  const prices=data.filter(d=>d.vw>0).map(d=>d.vw);
-  document.getElementById("s-min").textContent=prices.length?fmtPrice(Math.min(...prices)):"—";
-  document.getElementById("s-max").textContent=prices.length?fmtPrice(Math.max(...prices)):"—";
-  const dates=data.filter(d=>d.date&&d.date!=="2026-?").map(d=>d.date).sort();
-  document.getElementById("s-next").textContent=dates.length?dates[0].replace("2026-",""):"—";
-  const grid=document.getElementById("grid");
-  const noR=document.getElementById("no-results");
-  if(!data.length){grid.innerHTML="";noR.style.display="block";return;}
-  noR.style.display="none";
-  grid.innerHTML=data.map(d=>{
-    const rc=d.risk==="low"?"risk-low":d.risk==="med"?"risk-med":"risk-high";
-    const tc=typeColor[d.type]||typeColor["Info"];
-    const prosH=d.pros.map(p=>`<li>&#10003; ${p}</li>`).join("");
-    const consH=d.cons.slice(0,3).map(c=>`<li>&#10007; ${c}</li>`).join("");
-    return `<div class="card">
-<div class="card-head">
-  <div>
-    <div class="card-id"># ${d.id}</div>
-    <div class="card-addr">${d.addr}</div>
-    <div class="card-sub">${d.bezirk}</div>
-  </div>
-  <div style="display:flex;flex-direction:column;align-items:flex-end;gap:5px">
-    <span class="card-type" style="${tc}">${d.type}</span>
-    <span class="date-badge">&#128197; ${d.date.replace("2026-","").replace("?","TBD")}</span>
-  </div>
-</div>
-<div class="card-price">${fmtPrice(d.vw)}<span style="font-size:13px;color:#888780;font-weight:400;margin-left:6px">Verkehrswert</span></div>
-<div class="card-row">
-  ${d.wfl?`<span class="pill">${d.wfl} m&sup2;</span>`:""}
-  ${d.rooms?`<span class="pill">${d.rooms} Zi.</span>`:""}
-  ${d.bj?`<span class="pill">Bj. ${d.bj}</span>`:""}
-</div>
-<div class="risk-row">
-  <span class="risk-badge ${rc}">${riskLabel[d.risk]}</span>
-  <span style="font-size:11px;color:#888780">Bid: <b style="color:#1a1a18">${d.bid}</b></span>
-</div>
-<div class="pros-cons">
-  <div><div class="pc-label">Плюсы</div><ul class="pc-list">${prosH}</ul></div>
-  <div><div class="pc-label">Минусы</div><ul class="pc-list">${consH}</ul></div>
-</div>
-<div class="fin-block">
-  <div class="fin-row"><span class="fin-label">Аренда</span><span>${d.miete}</span></div>
-  <div class="fin-row"><span class="fin-label">Доходность</span><span>${d.yld}</span></div>
-  <div class="fin-row"><span class="fin-label">Ликвидность</span><span>${d.liqui}</span></div>
-  <div class="fin-row"><span class="fin-label">Риски</span><span style="text-align:right;max-width:180px">${d.risks}</span></div>
-</div>
-<div class="verdict">${d.verdict}</div>
-<div class="sources">
-  <span class="${d.beschluss?"src-yes":"src-no"}">Beschluss ${d.beschluss?"✓":"✗"}</span>
-  <span class="${d.gutachten?"src-yes":"src-no"}">Gutachten ${d.gutachten?"✓":"✗"}</span>
-</div>
-</div>`;
-  }).join("");
+let data=[...DATA];
+const tf=document.getElementById("f-type").value,rf=document.getElementById("f-risk").value,sf=document.getElementById("f-sort").value,search=document.getElementById("f-search").value.toLowerCase();
+if(tf)data=data.filter(d=>d.type===tf);
+if(rf)data=data.filter(d=>d.risk===rf);
+if(search)data=data.filter(d=>(d.addr||"").toLowerCase().includes(search)||(d.bezirk||"").toLowerCase().includes(search));
+if(sf==="asc")data.sort((a,b)=>(a.vw||0)-(b.vw||0));else if(sf==="desc")data.sort((a,b)=>(b.vw||0)-(a.vw||0));else data.sort((a,b)=>(a.date||"z").localeCompare(b.date||"z"));
+document.getElementById("grid").innerHTML=data.map(d=>`<div class="card"><div class="card-head"><span class="card-id">#${d.id}</span><span class="card-type" style="${typeColor[d.type]||typeColor["Sonstiges"]}">${d.type||"?"}</span></div><div class="card-addr">${d.addr||"Unbekannt"}</div><div class="card-sub">${d.bezirk||""}${d.wfl?" · "+d.wfl+" m²":""}${d.rooms?" · "+d.rooms+" Zi":""}${d.bj?" · BJ "+d.bj:""}</div>${(d.photos||[]).length?`<div class="card-photos">${d.photos.map(p=>`<img src="${p}" alt="Foto" loading="lazy">`).join("")}</div>`:""}<div class="card-price">${fmtPrice(d.vw)} <span class="date-badge">${d.date||"?"}</span></div><div class="risk-row"><span class="risk-badge risk-${d.risk||"med"}">${riskLabel[d.risk]||d.risk}</span><span class="date-badge">${d.discount||""}</span></div>${(d.pros||[]).length||(d.cons||[]).length?`<div class="pros-cons"><div><div class="pc-label">Pro</div><ul class="pc-list">${(d.pros||[]).map(p=>`<li>+ ${p}</li>`).join("")}</ul></div><div><div class="pc-label">Contra</div><ul class="pc-list">${(d.cons||[]).map(c=>`<li>− ${c}</li>`).join("")}</ul></div></div>`:""}<div class="fin-block"><div class="fin-row"><span class="fin-label">Marktpreis</span><span>${d.markt||"—"}</span></div><div class="fin-row"><span class="fin-label">Miete</span><span>${d.miete||"—"}</span></div><div class="fin-row"><span class="fin-label">Rendite</span><span>${d.yld||"—"}</span></div><div class="fin-row"><span class="fin-label">Liquiditaet</span><span>${d.liqui||"—"}</span></div><div class="fin-row"><span class="fin-label">Risiken</span><span style="text-align:right;max-width:180px">${d.risks||"—"}</span></div></div><div class="verdict">${d.verdict||""}</div><div class="sources"><span class="${d.beschluss?"src-yes":"src-no"}">Beschluss ${d.beschluss?"OK":"—"}</span><span class="${d.gutachten?"src-yes":"src-no"}">Gutachten ${d.gutachten?"OK":"—"}</span></div></div>`).join("");
+document.getElementById("no-results").style.display=data.length?"none":"block";
+const vws=data.map(d=>d.vw).filter(v=>v);if(vws.length){document.getElementById("s-min").textContent=fmtPrice(Math.min(...vws));document.getElementById("s-max").textContent=fmtPrice(Math.max(...vws))}
+const dates=data.map(d=>d.date).filter(d=>d&&d!=="unbekannt").sort();if(dates.length)document.getElementById("s-next").textContent=dates[0]
 }
-
 render();
 </script>
 </body>
