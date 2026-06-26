@@ -1,0 +1,528 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Wasserglas Rechner</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body { min-height: 100vh; }
+
+    body {
+      font-family: 'Inter', system-ui, sans-serif;
+      background: linear-gradient(135deg, #0c4a6e 0%, #155e75 30%, #0f4c4c 60%, #1a2e1a 100%);
+      min-height: 100vh;
+      position: relative;
+      overflow-x: hidden;
+    }
+
+    /* SiO2 Gitter Hintergrund */
+    .mol-bg {
+      position: fixed; inset: 0; pointer-events: none; opacity: 0.09; z-index: 0;
+    }
+
+    .wrap {
+      position: relative; z-index: 1;
+      width: min(1000px, calc(100% - 24px));
+      margin: 20px auto 40px;
+      display: grid;
+      gap: 16px;
+    }
+
+    /* HERO */
+    .hero {
+      background: rgba(255,255,255,0.09);
+      border: 1px solid rgba(255,255,255,0.18);
+      border-radius: 20px;
+      padding: 20px 24px 16px;
+      backdrop-filter: blur(2px);
+    }
+    .hero-top {
+      display: flex; align-items: center; gap: 14px; margin-bottom: 10px;
+    }
+    .mol-badge {
+      width: 52px; height: 52px; border-radius: 16px; flex-shrink: 0;
+      background: linear-gradient(135deg, rgba(14,116,144,0.8), rgba(180,83,9,0.7));
+      border: 1px solid rgba(255,255,255,0.28);
+      display: flex; align-items: center; justify-content: center;
+    }
+    .hero-title { color: #e0f7fa; font-size: 22px; font-weight: 700; letter-spacing: -0.02em; }
+    .hero-sub { color: #a5f3fc; font-size: 13px; margin-top: 2px; }
+    .theme-btn {
+      margin-left: auto; background: rgba(255,255,255,0.10);
+      border: 1px solid rgba(255,255,255,0.22); border-radius: 10px;
+      color: #e0f7fa; font-size: 12px; padding: 6px 12px; cursor: pointer;
+    }
+    .chem-pills { display: flex; gap: 8px; flex-wrap: wrap; }
+    .pill {
+      background: rgba(255,255,255,0.10); border: 1px solid rgba(255,255,255,0.18);
+      border-radius: 20px; padding: 4px 12px; font-size: 12px; color: #cffafe;
+      font-family: ui-monospace, Consolas, monospace;
+    }
+    .pill sub { font-size: 9px; }
+    .pill.gold { color: #fde68a; }
+
+    /* MAIN GRID */
+    .main-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    .card {
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.15);
+      border-radius: 18px;
+      padding: 18px 20px;
+      backdrop-filter: blur(1px);
+    }
+    .card-label {
+      font-size: 10px; font-weight: 700; letter-spacing: 0.12em;
+      text-transform: uppercase; color: #7dd3fc;
+      margin-bottom: 14px;
+      display: flex; align-items: center; gap: 8px;
+    }
+    .card-label::after {
+      content: ''; flex: 1; height: 1px; background: rgba(125,211,252,0.2);
+    }
+
+    /* EINGABEN */
+    .field-grid {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 10px;
+    }
+    .field { display: flex; flex-direction: column; gap: 5px; }
+    .field.full { grid-column: 1 / -1; }
+    label {
+      font-size: 10px; font-weight: 600; letter-spacing: 0.08em;
+      text-transform: uppercase; color: #7dd3fc;
+    }
+    label sub { font-size: 8px; }
+    input[type="number"] {
+      background: rgba(255,255,255,0.10);
+      border: 1px solid rgba(255,255,255,0.20);
+      border-radius: 10px; color: #e0f7fa;
+      font-size: 18px; font-weight: 600; font-family: inherit;
+      padding: 10px 12px; outline: none; width: 100%;
+      transition: border-color 0.15s, box-shadow 0.15s;
+    }
+    input[type="number"]:focus {
+      border-color: #22d3ee;
+      box-shadow: 0 0 0 3px rgba(34,211,238,0.18);
+    }
+
+    .soll-strip {
+      background: rgba(14,116,144,0.22);
+      border: 1px solid rgba(14,116,144,0.35);
+      border-radius: 10px; padding: 10px 12px;
+      display: flex; gap: 14px; flex-wrap: wrap;
+    }
+    .soll-item { display: flex; flex-direction: column; gap: 2px; }
+    .soll-item span:first-child { font-size: 9px; color: #7dd3fc; text-transform: uppercase; letter-spacing: 0.07em; }
+    .soll-item span:last-child { font-size: 14px; font-weight: 600; color: #e0f7fa; }
+    .soll-item sub { font-size: 8px; }
+
+    .btn-row { display: flex; gap: 10px; margin-top: 14px; }
+    .btn-primary {
+      flex: 1; background: linear-gradient(135deg, #0e7490, #0f766e);
+      border: 1px solid rgba(255,255,255,0.18); border-radius: 10px;
+      color: white; font-size: 14px; font-weight: 700; font-family: inherit;
+      padding: 11px 18px; cursor: pointer; letter-spacing: 0.01em;
+    }
+    .btn-primary:hover { opacity: 0.88; }
+    .btn-secondary {
+      background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.18);
+      border-radius: 10px; color: #a5f3fc; font-size: 13px; font-weight: 600;
+      font-family: inherit; padding: 11px 14px; cursor: pointer;
+    }
+    .btn-secondary:hover { background: rgba(255,255,255,0.13); }
+
+    /* ERGEBNISSE rechte Seite */
+    .results-col { display: flex; flex-direction: column; gap: 12px; }
+
+    /* FINALE ZUGABEN — gross und fett */
+    .zugabe-box {
+      border-radius: 16px; padding: 16px 18px;
+      position: relative; overflow: hidden;
+    }
+    .zugabe-box.lauge {
+      background: linear-gradient(135deg, rgba(180,83,9,0.35), rgba(146,64,14,0.25));
+      border: 1.5px solid rgba(251,191,36,0.45);
+    }
+    .zugabe-box.wasser {
+      background: linear-gradient(135deg, rgba(29,78,216,0.35), rgba(14,116,144,0.25));
+      border: 1.5px solid rgba(56,189,248,0.45);
+    }
+    .zugabe-box .zb-label {
+      font-size: 10px; font-weight: 700; letter-spacing: 0.12em;
+      text-transform: uppercase; margin-bottom: 6px;
+    }
+    .zugabe-box.lauge .zb-label { color: #fbbf24; }
+    .zugabe-box.wasser .zb-label { color: #38bdf8; }
+    .zugabe-box .zb-pro-tonne {
+      font-size: 13px; color: rgba(255,255,255,0.55); margin-bottom: 8px;
+    }
+    .zugabe-box .zb-gesamt {
+      font-size: 36px; font-weight: 800; letter-spacing: -0.03em; line-height: 1;
+    }
+    .zugabe-box.lauge .zb-gesamt { color: #fef3c7; }
+    .zugabe-box.wasser .zb-gesamt { color: #e0f2fe; }
+    .zugabe-box .zb-unit {
+      font-size: 16px; font-weight: 500; opacity: 0.7; margin-left: 4px;
+    }
+    .zugabe-box .zb-sub {
+      font-size: 12px; color: rgba(255,255,255,0.45); margin-top: 6px;
+    }
+
+    /* Status */
+    .status-box {
+      background: rgba(255,255,255,0.07);
+      border: 1px solid rgba(255,255,255,0.14);
+      border-radius: 12px; padding: 12px 14px;
+      display: flex; align-items: center; gap: 10px;
+    }
+    .status-dot {
+      width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0;
+      background: rgba(255,255,255,0.3);
+    }
+    .status-dot.ok { background: #4ade80; box-shadow: 0 0 8px rgba(74,222,128,0.5); }
+    .status-dot.warn { background: #fbbf24; box-shadow: 0 0 8px rgba(251,191,36,0.5); }
+    .status-dot.ready { background: #7dd3fc; }
+    #statusText { font-size: 14px; font-weight: 600; color: #e0f7fa; }
+
+    /* RECHENPROTOKOLL */
+    .protocol-card {
+      grid-column: 1 / -1;
+    }
+    .protocol-inner {
+      background: rgba(0,0,0,0.28);
+      border: 1px solid rgba(165,243,252,0.18);
+      border-radius: 12px;
+      font-family: ui-monospace, Consolas, 'Courier New', monospace;
+      font-size: 12px; line-height: 1.8;
+      overflow: hidden;
+    }
+    .prot-section {
+      padding: 10px 14px;
+      border-bottom: 1px solid rgba(165,243,252,0.1);
+    }
+    .prot-section:last-child { border-bottom: none; }
+    .prot-section-title {
+      font-size: 10px; font-weight: 700; letter-spacing: 0.12em;
+      text-transform: uppercase; color: #fbbf24; margin-bottom: 6px;
+    }
+    .prot-line { color: #94a3b8; }
+    .prot-line .step { color: rgba(165,243,252,0.35); margin-right: 6px; }
+    .prot-line .op { color: #a5f3fc; }
+    .prot-line .res { color: #e0f7fa; font-weight: 600; }
+    .prot-line .ergebnis { color: #4ade80; font-weight: 700; }
+    .prot-empty {
+      padding: 14px; color: rgba(165,243,252,0.3); font-size: 12px;
+    }
+
+    @media (max-width: 680px) {
+      .main-grid { grid-template-columns: 1fr; }
+      .field-grid { grid-template-columns: 1fr; }
+      .protocol-card { grid-column: 1 / -1; }
+      .zugabe-box .zb-gesamt { font-size: 28px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Molekülgitter Hintergrund -->
+  <svg class="mol-bg" viewBox="0 0 700 500" xmlns="http://www.w3.org/2000/svg">
+    <g stroke="white" stroke-width="0.8" fill="none">
+      <line x1="80" y1="80" x2="160" y2="120"/><line x1="160" y1="120" x2="240" y2="80"/>
+      <line x1="240" y1="80" x2="320" y2="120"/><line x1="320" y1="120" x2="400" y2="80"/>
+      <line x1="400" y1="80" x2="480" y2="120"/><line x1="480" y1="120" x2="560" y2="80"/>
+      <line x1="560" y1="80" x2="640" y2="120"/>
+      <line x1="160" y1="120" x2="160" y2="200"/><line x1="240" y1="80" x2="240" y2="160"/>
+      <line x1="320" y1="120" x2="320" y2="200"/><line x1="400" y1="80" x2="400" y2="160"/>
+      <line x1="480" y1="120" x2="480" y2="200"/><line x1="560" y1="80" x2="560" y2="160"/>
+      <line x1="80" y1="200" x2="160" y2="200"/><line x1="160" y1="200" x2="240" y2="160"/>
+      <line x1="240" y1="160" x2="320" y2="200"/><line x1="320" y1="200" x2="400" y2="160"/>
+      <line x1="400" y1="160" x2="480" y2="200"/><line x1="480" y1="200" x2="560" y2="160"/>
+      <line x1="560" y1="160" x2="640" y2="200"/>
+      <line x1="80" y1="200" x2="80" y2="300"/><line x1="160" y1="200" x2="160" y2="300"/>
+      <line x1="240" y1="160" x2="240" y2="280"/><line x1="320" y1="200" x2="320" y2="300"/>
+      <line x1="400" y1="160" x2="400" y2="280"/><line x1="480" y1="200" x2="480" y2="300"/>
+      <line x1="560" y1="160" x2="560" y2="280"/><line x1="640" y1="200" x2="640" y2="300"/>
+      <line x1="80" y1="300" x2="160" y2="300"/><line x1="160" y1="300" x2="240" y2="280"/>
+      <line x1="240" y1="280" x2="320" y2="300"/><line x1="320" y1="300" x2="400" y2="280"/>
+      <line x1="400" y1="280" x2="480" y2="300"/><line x1="480" y1="300" x2="560" y2="280"/>
+      <line x1="560" y1="280" x2="640" y2="300"/>
+      <line x1="80" y1="300" x2="80" y2="420"/><line x1="160" y1="300" x2="160" y2="420"/>
+      <line x1="240" y1="280" x2="240" y2="400"/><line x1="320" y1="300" x2="320" y2="420"/>
+      <line x1="400" y1="280" x2="400" y2="400"/><line x1="480" y1="300" x2="480" y2="420"/>
+      <line x1="80" y1="420" x2="160" y2="420"/><line x1="160" y1="420" x2="240" y2="400"/>
+      <line x1="240" y1="400" x2="320" y2="420"/><line x1="320" y1="420" x2="400" y2="400"/>
+      <line x1="400" y1="400" x2="480" y2="420"/>
+    </g>
+    <g fill="white">
+      <circle cx="80" cy="80" r="2.5"/><circle cx="160" cy="120" r="4"/>
+      <circle cx="240" cy="80" r="2.5"/><circle cx="320" cy="120" r="4"/>
+      <circle cx="400" cy="80" r="2.5"/><circle cx="480" cy="120" r="4"/>
+      <circle cx="560" cy="80" r="2.5"/><circle cx="640" cy="120" r="4"/>
+      <circle cx="80" cy="200" r="4"/><circle cx="160" cy="200" r="2.5"/>
+      <circle cx="240" cy="160" r="4"/><circle cx="320" cy="200" r="2.5"/>
+      <circle cx="400" cy="160" r="4"/><circle cx="480" cy="200" r="2.5"/>
+      <circle cx="560" cy="160" r="4"/><circle cx="640" cy="200" r="2.5"/>
+      <circle cx="80" cy="300" r="2.5"/><circle cx="160" cy="300" r="4"/>
+      <circle cx="240" cy="280" r="2.5"/><circle cx="320" cy="300" r="4"/>
+      <circle cx="400" cy="280" r="2.5"/><circle cx="480" cy="300" r="4"/>
+      <circle cx="560" cy="280" r="2.5"/><circle cx="640" cy="300" r="4"/>
+      <circle cx="80" cy="420" r="4"/><circle cx="160" cy="420" r="2.5"/>
+      <circle cx="240" cy="400" r="4"/><circle cx="320" cy="420" r="2.5"/>
+      <circle cx="400" cy="400" r="4"/><circle cx="480" cy="420" r="2.5"/>
+    </g>
+  </svg>
+
+  <div class="wrap">
+
+    <!-- HERO -->
+    <header class="hero">
+      <div class="hero-top">
+        <div class="mol-badge">
+          <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
+            <circle cx="14" cy="14" r="5" fill="#67e8f9"/>
+            <circle cx="6" cy="6" r="3" fill="#fde68a"/>
+            <circle cx="22" cy="6" r="3" fill="#fde68a"/>
+            <circle cx="6" cy="22" r="3" fill="#fde68a"/>
+            <circle cx="22" cy="22" r="3" fill="#fde68a"/>
+            <line x1="14" y1="14" x2="6" y2="6" stroke="white" stroke-width="1.2"/>
+            <line x1="14" y1="14" x2="22" y2="6" stroke="white" stroke-width="1.2"/>
+            <line x1="14" y1="14" x2="6" y2="22" stroke="white" stroke-width="1.2"/>
+            <line x1="14" y1="14" x2="22" y2="22" stroke="white" stroke-width="1.2"/>
+          </svg>
+        </div>
+        <div>
+          <div class="hero-title">Wasserglas Rechner</div>
+          <div class="hero-sub">Laugezugabe &amp; Wasserzugabe — Kieselsäure / G-Verhältnis Korrektur</div>
+        </div>
+        <button class="theme-btn" id="themeBtn">◑ Hell</button>
+      </div>
+      <div class="chem-pills">
+        <div class="pill">SiO<sub>2</sub> · Na<sub>2</sub>O · H<sub>2</sub>O</div>
+        <div class="pill">Modul = SiO<sub>2</sub> / GV-Soll</div>
+        <div class="pill gold">Sollwerte fest · Isttonnen variabel</div>
+      </div>
+    </header>
+
+    <!-- MAIN -->
+    <div class="main-grid">
+
+      <!-- LINKS: Eingaben -->
+      <section class="card">
+        <div class="card-label">Eingaben</div>
+        <div class="field-grid">
+          <div class="field">
+            <label>Isttonnen Wasserglas</label>
+            <input id="tonsActual" type="number" step="0.01" value="84.26">
+          </div>
+          <div class="field">
+            <label>SiO<sub>2</sub> Ist</label>
+            <input id="siIst" type="number" step="0.01" value="27.85">
+          </div>
+          <div class="field">
+            <label>Na<sub>2</sub>O Ist</label>
+            <input id="naIst" type="number" step="0.01" value="8.14">
+          </div>
+          <div class="field">
+            <label>G-Verhältnis Ist</label>
+            <input id="gvIst" type="number" step="0.01" value="3.42">
+          </div>
+          <div class="field full">
+            <div class="soll-strip">
+              <div class="soll-item">
+                <span>SiO<sub>2</sub> Soll</span><span id="disp-si-soll">26,80</span>
+              </div>
+              <div class="soll-item">
+                <span>Na<sub>2</sub>O Soll</span><span id="disp-na-soll">8,00</span>
+              </div>
+              <div class="soll-item">
+                <span>GV Soll</span><span id="disp-gv-soll">3,35</span>
+              </div>
+              <div class="soll-item">
+                <span>Faktor</span><span>25</span>
+              </div>
+              <div class="soll-item">
+                <span>Lauge ρ</span><span>1,5 kg/L</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="btn-row">
+          <button class="btn-primary" id="calcBtn">⟶ Berechnen</button>
+          <button class="btn-secondary" id="resetBtn">↺ Beispiel</button>
+        </div>
+      </section>
+
+      <!-- RECHTS: Ergebnisse -->
+      <aside class="results-col">
+
+        <!-- STATUS -->
+        <div class="status-box">
+          <div class="status-dot ready" id="statusDot"></div>
+          <div id="statusText">Werte eingeben und Berechnen drücken</div>
+        </div>
+
+        <!-- LAUGEZUGABE -->
+        <div class="zugabe-box lauge">
+          <div class="zb-label">🟡 Laugezugabe</div>
+          <div class="zb-pro-tonne" id="lyePerTon">— kg pro Tonne</div>
+          <div class="zb-gesamt" id="totalLyeLiter">—<span class="zb-unit">Liter</span></div>
+          <div class="zb-sub" id="totalLyeKg">— kg gesamt</div>
+        </div>
+
+        <!-- WASSERZUGABE -->
+        <div class="zugabe-box wasser">
+          <div class="zb-label">🔵 Wasserzugabe</div>
+          <div class="zb-pro-tonne" id="waterPerTon">— kg pro Tonne</div>
+          <div class="zb-gesamt" id="totalWaterLiter">—<span class="zb-unit">Liter</span></div>
+          <div class="zb-sub" id="totalWaterKg">— kg gesamt</div>
+        </div>
+
+      </aside>
+
+      <!-- RECHENPROTOKOLL unten über volle Breite -->
+      <section class="card protocol-card">
+        <div class="card-label">Rechenprotokoll — exakt nach Vorlage</div>
+        <div class="protocol-inner" id="protocolBox">
+          <div class="prot-empty">// Laborprotokoll erscheint nach Berechnung</div>
+        </div>
+      </section>
+
+    </div>
+  </div>
+
+  <script>
+    const SOLL = { si: 26.80, na: 8.00, gv: 3.35, factor: 25, lyeDensity: 1.5 };
+
+    const $ = id => document.getElementById(id);
+    const fields = {
+      tonsActual: $('tonsActual'), siIst: $('siIst'),
+      naIst: $('naIst'), gvIst: $('gvIst')
+    };
+
+    function num(v) { return Number(String(v).replace(',', '.')); }
+    function fmt(n, d = 2) {
+      return Number(n).toLocaleString('de-DE', { minimumFractionDigits: d, maximumFractionDigits: d });
+    }
+
+    function calc() {
+      const tons   = num(fields.tonsActual.value);
+      const siIst  = num(fields.siIst.value);
+      const naIst  = num(fields.naIst.value);
+      const gvIst  = num(fields.gvIst.value);
+
+      if ([tons, siIst, naIst, gvIst].some(v => !Number.isFinite(v) || v <= 0)) {
+        $('statusText').textContent = 'Bitte gültige Werte eingeben';
+        $('statusDot').className = 'status-dot warn';
+        return;
+      }
+
+      // ── RECHNUNG 1: Laugezugabe ──────────────────────────────────────
+      // Schritt 1: SiO2 Ist ÷ GV Soll = Na2O-Zielwert
+      const naZiel = siIst / SOLL.gv;
+      // Schritt 2: Na2O-Zielwert − Na2O Ist = Differenz
+      const naDiff = naZiel - naIst;
+      // Schritt 3: Differenz × Faktor 25 = Lauge pro Tonne [kg/t]
+      const lyePerTon = naDiff * SOLL.factor;
+
+      // ── RECHNUNG 2: Wasserzugabe ─────────────────────────────────────
+      // Schritt 1: Korrekturfaktor = 1 + (lyePerTon / 1000)
+      //            z.B. 4,25 kg/t → Faktor 1,00425
+      const corrFactor = 1 + (lyePerTon / 1000);
+      // Schritt 2: SiO2 Ist ÷ Korrekturfaktor = SiO2 nach Laugezugabe
+      const siNachLauge = siIst / corrFactor;
+      // Schritt 3: SiO2 nach Lauge ÷ SiO2 Soll = Verhältnis
+      const siRatio = siNachLauge / SOLL.si;
+      // Schritt 4: (Verhältnis − 1) × 1000 = Wasser pro Tonne [kg/t]
+      const waterPerTon = (siRatio - 1) * 1000;
+
+      // ── RECHNUNG 3: Gesamtmengen ─────────────────────────────────────
+      const totalLyeKg     = lyePerTon * tons;
+      const totalLyeLiter  = totalLyeKg / SOLL.lyeDensity;
+      const totalWaterKg   = waterPerTon * tons;
+      const totalWaterLiter = totalWaterKg; // Wasser ρ ≈ 1 kg/L
+
+      // Ausgabe Ergebnisse
+      $('lyePerTon').textContent    = fmt(lyePerTon) + ' kg pro Tonne';
+      $('totalLyeLiter').innerHTML  = fmt(totalLyeLiter, 0) + '<span class="zb-unit"> Liter</span>';
+      $('totalLyeKg').textContent   = fmt(totalLyeKg) + ' kg gesamt  ÷ 1,5 = Liter';
+
+      $('waterPerTon').textContent    = fmt(waterPerTon, 1) + ' kg pro Tonne';
+      $('totalWaterLiter').innerHTML  = fmt(totalWaterLiter, 0) + '<span class="zb-unit"> Liter</span>';
+      $('totalWaterKg').textContent   = fmt(totalWaterKg) + ' kg gesamt  (ρ ≈ 1 kg/L)';
+
+      // Status
+      const nah = Math.abs(gvIst - SOLL.gv) < 0.05 && Math.abs(siIst - SOLL.si) < 0.1 && Math.abs(naIst - SOLL.na) < 0.05;
+      $('statusText').textContent = nah ? '✓ Bereits nah am Sollwert' : 'Zugabe notwendig — Werte liegen außerhalb Soll';
+      $('statusDot').className = 'status-dot ' + (nah ? 'ok' : 'warn');
+
+      // Protokoll
+      const lines = [
+        { title: 'Rechnung 1 — Laugezugabe (G-Verhältnis)', rows: [
+          ['1', 'SiO₂ Ist', 'geteilt durch', 'GV Soll', fmt(siIst) + ' ÷ ' + fmt(SOLL.gv), '= ' + fmt(naZiel) + ' (Na₂O-Zielwert)'],
+          ['2', 'Na₂O-Ziel', 'minus', 'Na₂O Ist', fmt(naZiel) + ' − ' + fmt(naIst), '= ' + fmt(naDiff)],
+          ['3', 'Differenz', 'mal Faktor', '25', fmt(naDiff) + ' × 25', '= ' + fmt(lyePerTon) + ' kg/t  ← Ergebnis 1'],
+        ]},
+        { title: 'Rechnung 2 — Wasserzugabe (Kieselsäure)', rows: [
+          ['1', 'Korrekturfaktor', '=', '1 + (Lauge kg/t ÷ 1000)', '1 + (' + fmt(lyePerTon) + ' ÷ 1000)', '= ' + fmt(corrFactor, 5)],
+          ['2', 'SiO₂ Ist', 'geteilt durch', 'Korrekturfaktor', fmt(siIst) + ' ÷ ' + fmt(corrFactor, 5), '= ' + fmt(siNachLauge) + ' (SiO₂ nach Lauge)'],
+          ['3', 'SiO₂ nach Lauge', 'geteilt durch', 'SiO₂ Soll', fmt(siNachLauge) + ' ÷ ' + fmt(SOLL.si), '= ' + fmt(siRatio, 4)],
+          ['4', 'Verhältnis', '−1 × 1000', '= Wasser/t', '(' + fmt(siRatio, 4) + ' − 1) × 1000', '= ' + fmt(waterPerTon, 1) + ' kg/t  ← Ergebnis 2'],
+        ]},
+        { title: 'Rechnung 3 — Gesamtmengen für ' + fmt(tons) + ' Tonnen', rows: [
+          ['1', 'Lauge gesamt', fmt(lyePerTon) + ' × ' + fmt(tons), '÷ 1,5', '', '= ' + fmt(totalLyeLiter, 0) + ' Liter Lauge  ← ZUGABE'],
+          ['2', 'Wasser gesamt', fmt(waterPerTon, 1) + ' × ' + fmt(tons), '', '', '= ' + fmt(totalWaterLiter, 0) + ' Liter Wasser  ← ZUGABE'],
+        ]},
+      ];
+
+      let html = '';
+      for (const sec of lines) {
+        html += `<div class="prot-section">`;
+        html += `<div class="prot-section-title">${sec.title}</div>`;
+        for (const r of sec.rows) {
+          const isErgebnis = r[5].includes('ZUGABE');
+          html += `<div class="prot-line">`;
+          html += `<span class="step">${r[0]}</span>`;
+          html += `<span class="op">${r[1]}</span>  `;
+          html += `<span style="color:rgba(165,243,252,0.4)">${r[2]}</span>  `;
+          html += `<span style="color:rgba(165,243,252,0.4)">${r[3]}</span>  `;
+          html += `<span style="color:#94a3b8">${r[4]}</span>  `;
+          html += `<span class="${isErgebnis ? 'ergebnis' : 'res'}">${r[5]}</span>`;
+          html += `</div>`;
+        }
+        html += `</div>`;
+      }
+      $('protocolBox').innerHTML = html;
+    }
+
+    $('calcBtn').addEventListener('click', calc);
+    $('resetBtn').addEventListener('click', () => {
+      fields.tonsActual.value = '84.26';
+      fields.siIst.value      = '27.85';
+      fields.naIst.value      = '8.14';
+      fields.gvIst.value      = '3.42';
+      calc();
+    });
+    Object.values(fields).forEach(el => el.addEventListener('input', calc));
+
+    // Theme Toggle (Light-Modus)
+    let lightMode = false;
+    $('themeBtn').addEventListener('click', () => {
+      lightMode = !lightMode;
+      document.body.style.background = lightMode
+        ? 'linear-gradient(135deg, #e0f2fe 0%, #f0fdfa 40%, #f0fdf4 100%)'
+        : '';
+      $('themeBtn').textContent = lightMode ? '◑ Dunkel' : '◑ Hell';
+    });
+
+    calc();
+  </script>
+</body>
+</html>
